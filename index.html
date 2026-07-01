@@ -5,225 +5,349 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>🎬 Режиссёрский сценарий</title>
 <style>
-  :root {
-    --bg:#0a0a0a; --card:#121212; --border:#1e1e1e;
-    --accent:#e94560; --gold:#f0a500; --green:#4ecca3;
-    --text:#ddd; --muted:#777; --input-bg:#161616;
-    --safe-top: env(safe-area-inset-top, 0);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html,body {
-    background:var(--bg); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
-    min-height:100vh; -webkit-tap-highlight-color:transparent;
-    font-size:13px;
-  }
+:root {
+  --bg:#0a0a0a; --card:#121212; --border:#202020;
+  --accent:#e94560; --gold:#f0a500; --green:#4ecca3;
+  --text:#ddd; --muted:#777; --input:#161616;
+  --int-day:#1a2a1a; --int-night:#0f0f1a; --ext-day:#2a1a0a; --ext-night:#0a0a1a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;font-size:13px;-webkit-tap-highlight-color:transparent}
 
-  /* Toolbar */
-  .tb {
-    position:sticky; top:0; z-index:100;
-    background:rgba(10,10,10,0.97); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-    padding:calc(8px + var(--safe-top)) 12px 8px;
-    display:flex; gap:6px; align-items:center; flex-wrap:wrap;
-  }
-  .tb h1 { font-size:15px; font-weight:800; margin-right:auto; }
-  .tb input.project { background:var(--input-bg); border:1px solid var(--border); color:var(--text);
-    border-radius:6px; padding:7px 10px; font-size:12px; width:130px; outline:none; }
-  .tb input.project:focus { border-color:var(--accent); }
-  .btn {
-    padding:7px 12px; border-radius:6px; border:1px solid var(--border);
-    background:var(--card); color:var(--text); font-size:11px;
-    font-weight:600; cursor:pointer; white-space:nowrap; font-family:inherit;
-  }
-  .btn:active { background:#222; }
-  .btn.a { background:var(--accent); border-color:var(--accent); color:#fff; }
-  .btn.g { background:var(--green); border-color:var(--green); color:#000; }
-  .btn.s { padding:5px 8px; font-size:10px; }
+/* TOOLBAR */
+.tb{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:8px 12px;display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.tb h1{font-size:14px;font-weight:800;margin-right:auto}
+.tb select.project{background:var(--input);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 8px;font-size:12px;min-width:140px;outline:none;cursor:pointer}
+.btn{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit}
+.btn:active{background:#222}
+.btn.a{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.g{background:var(--green);border-color:var(--green);color:#000}
+.btn.s{padding:4px 7px;font-size:10px}
+.btn.danger{color:var(--accent);border-color:var(--accent)}
 
-  /* Table wrapper - scrollable */
-  .tw { overflow-x:auto; padding:8px; -webkit-overflow-scrolling:touch; }
-  table { border-collapse:collapse; min-width:100%; font-size:12px; }
-  th, td {
-    border:1px solid var(--border); padding:6px 8px;
-    text-align:left; vertical-align:top; min-width:70px; max-width:200px;
-  }
-  th {
-    background:var(--card); color:var(--muted); font-size:10px;
-    text-transform:uppercase; letter-spacing:0.5px; position:sticky; top:90px; z-index:5;
-    white-space:nowrap;
-  }
-  td input, td textarea, td select {
-    width:100%; background:transparent; border:none; color:var(--text);
-    font-size:12px; font-family:inherit; resize:vertical; padding:0; outline:none;
-  }
-  td textarea { min-height:40px; resize:none; }
-  td select { appearance:none; cursor:pointer; }
-  td input:focus, td textarea:focus, td select:focus { background:rgba(233,69,96,0.05); }
-  td.row-num {
-    text-align:center; font-weight:800; font-size:11px;
-    color:var(--accent); min-width:32px; max-width:32px; padding:6px 2px;
-  }
-  td.row-actions { min-width:60px; max-width:60px; text-align:center; }
-  td.row-actions button {
-    padding:2px 6px; border-radius:3px; border:1px solid var(--border);
-    background:var(--input-bg); color:var(--muted); cursor:pointer; font-size:10px;
-    margin:1px;
-  }
-  td.row-actions button:active { color:var(--accent); border-color:var(--accent); }
-  td.sb-cell { min-width:90px; max-width:120px; }
-  .sb-thumbs { display:flex; gap:3px; flex-wrap:wrap; }
-  .sb-thumb {
-    width:36px; height:27px; border-radius:3px; border:1px solid var(--border);
-    background:var(--input-bg); cursor:pointer; overflow:hidden;
-    display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--muted);
-  }
-  .sb-thumb img { width:100%; height:100%; object-fit:cover; }
+/* CREW */
+.crew{padding:10px 12px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.crew label{font-size:10px;color:var(--muted);text-transform:uppercase;display:flex;flex-direction:column;gap:2px}
+.crew input{background:var(--input);border:1px solid var(--border);color:var(--text);border-radius:5px;padding:5px 8px;font-size:12px;width:140px;outline:none}
+.crew input:focus{border-color:var(--accent)}
 
-  /* Hover highlight */
-  tr:hover td { background:rgba(255,255,255,0.02); }
+/* TABLE */
+.tw{overflow-x:auto;padding:8px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;min-width:100%;font-size:12px}
+thead th{background:var(--card);position:sticky;top:75px;z-index:5}
+th,td{border:1px solid var(--border);padding:5px 6px;text-align:left;vertical-align:top}
+th{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+td input,td textarea,td select{width:100%;background:transparent;border:none;color:var(--text);font-size:11px;font-family:inherit;padding:2px;outline:none;resize:vertical}
+td textarea{min-height:36px;resize:none}
+td select{appearance:none;cursor:pointer}
+td input:focus,td textarea:focus,td select:focus{background:rgba(233,69,96,0.08)}
 
-  /* Print */
-  @media print {
-    body { background:#fff; color:#000; }
-    .tb, .row-actions, .sb-add-btn { display:none !important; }
-    .tw { overflow:visible; padding:0; }
-    table { font-size:10px; }
-    th, td { border-color:#000; color:#000; padding:3px 5px; }
-    th { background:#eee; }
-    td input, td textarea, td select { color:#000; }
-    @page { margin:10mm; size:A4 landscape; }
-  }
+td.num{text-align:center;font-weight:800;font-size:11px;color:var(--accent);min-width:28px;padding:5px 2px}
+td.chk{min-width:22px;width:22px;text-align:center;padding:4px 0}
+td.chk input{width:14px;height:14px;accent-color:var(--accent)}
+td.sb{min-width:80px;max-width:110px}
+td.act{min-width:52px;max-width:52px;text-align:center;white-space:nowrap}
+td.act button{padding:2px 5px;border-radius:3px;border:1px solid var(--border);background:var(--input);color:var(--muted);cursor:pointer;font-size:9px;margin:1px}
+td.act button:active{color:var(--accent)}
+
+/* Color rows by I/E D/N */
+tr.ie-int-night td{background:rgba(10,10,30,0.4)}
+tr.ie-ext-night td{background:rgba(10,15,30,0.5)}
+tr.ie-int-day td{background:rgba(15,30,15,0.3)}
+tr.ie-ext-day td{background:rgba(30,20,10,0.3)}
+tr.selected td{background:rgba(233,69,96,0.12)!important}
+tr:hover td{background:rgba(255,255,255,0.02)!important}
+tr.selected:hover td{background:rgba(233,69,96,0.18)!important}
+
+/* Storyboard thumbs */
+.sb-row{display:flex;gap:3px;flex-wrap:wrap}
+.sb-slot{width:34px;height:26px;border-radius:3px;border:2px dashed var(--border);background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);transition:.15s;position:relative}
+.sb-slot img{width:100%;height:100%;object-fit:cover}
+.sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
+.sb-slot .del{position:absolute;top:0;right:0;width:14px;height:14px;background:var(--accent);color:#fff;border:none;font-size:8px;display:none;align-items:center;justify-content:center;cursor:pointer}
+.sb-slot.has-img:hover .del{display:flex}
+
+/* Full image modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:200;cursor:pointer}
+.modal img{max-width:95vw;max-height:95vh;border-radius:8px}
+
+/* Print */
+@media print{
+  body{background:#fff;color:#000;font-size:9px}
+  .tb,.crew,.act,.chk,.del,.btn{display:none!important}
+  .tw{overflow:visible;padding:0}
+  table{font-size:9px;min-width:auto}
+  th,td{border-color:#000;color:#000;padding:2px 4px}
+  th{background:#eee;position:static}
+  td input,td textarea,td select{color:#000}
+  .sb-slot img{max-width:30px}
+  tr.ie-int-night td,tr.ie-ext-night td,tr.ie-int-day td,tr.ie-ext-day td{background:transparent!important}
+  @page{margin:8mm;size:A4 landscape}
+}
 </style>
 </head>
 <body>
 
+<!-- TOOLBAR -->
 <div class="tb">
   <h1>🎬 Сценарий</h1>
-  <input class="project" id="pn" placeholder="Название" value="Суперсолдат">
+  <select class="project" id="projSel" onchange="switchProject(this.value)"></select>
   <button class="btn a" onclick="addRow()">+ Строка</button>
   <button class="btn" onclick="addRows(3)">+3</button>
   <button class="btn" onclick="addRows(10)">+10</button>
+  <button class="btn s" onclick="newProject()" title="Новый проект">🆕</button>
   <button class="btn g" onclick="exportCSV()">📥 CSV</button>
   <button class="btn s" onclick="exportJSON()">💾 JSON</button>
-  <label class="btn s" style="cursor:pointer;">📂 Импорт <input type="file" accept=".csv,.json" style="display:none" onchange="loadFile(this)"></label>
-  <button class="btn s" onclick="window.print()">🖨️ Печать</button>
-  <span id="cnt" style="font-size:11px;color:var(--muted);margin-left:8px;"></span>
+  <label class="btn s" style="cursor:pointer">📂 Импорт <input type="file" accept=".csv,.json" style="display:none" onchange="loadFile(this)"></label>
+  <button class="btn s" onclick="window.print()">🖨️</button>
+  <button class="btn danger s" onclick="delSelected()" id="delSel" style="display:none">✕ Выд.</button>
+  <span id="cnt" style="font-size:11px;color:var(--muted);margin-left:4px"></span>
 </div>
 
+<!-- CREW -->
+<div class="crew">
+  <label>Режиссёр <input id="crDir" placeholder="Хахуза" oninput="saveMeta()"></label>
+  <label>Оператор <input id="crOp" placeholder="Ярослав Савельев" oninput="saveMeta()"></label>
+  <label>Продюсер <input id="crProd" placeholder="" oninput="saveMeta()"></label>
+  <label style="margin-left:8px">Грип/Свет <input id="crGrip" placeholder="" oninput="saveMeta()"></label>
+</div>
+
+<!-- TABLE -->
 <div class="tw">
-  <table id="t">
+  <table>
     <thead><tr>
-      <th>#</th><th>SHOT</th><th>I/E D/N</th><th>Кадр</th><th>Субъект</th>
-      <th>Угол</th><th>Линза</th><th>Оборуд.</th><th>Камера</th>
-      <th>Действие</th><th>Заметки</th><th>Заметки ОПЕР</th><th>Текст</th>
-      <th>Тайминг</th><th>Локация</th><th>🎬 Раскадровка</th><th></th>
+      <th style="width:22px"></th>
+      <th style="width:28px">#</th>
+      <th>SHOT</th>
+      <th>I/E D/N</th>
+      <th>Кадр</th>
+      <th>Субъект</th>
+      <th>Угол</th>
+      <th>Линза</th>
+      <th>Оборуд.</th>
+      <th>Камера</th>
+      <th>Действие</th>
+      <th>Заметки</th>
+      <th>Заметки ОПЕР</th>
+      <th>Текст</th>
+      <th>Тайминг</th>
+      <th>Локация</th>
+      <th style="min-width:85px">🎬 Раскадровка</th>
+      <th style="width:52px"></th>
     </tr></thead>
-    <tbody id="tb"></tbody>
+    <tbody id="tBody"></tbody>
   </table>
 </div>
 
 <script>
-var FIELDS = ['shotNo','ieDn','frame','subject','angle','lens','equipment','cameraMove',
-  'action','notes','opNotes','text','timing','location'];
-var SEL_FIELDS = {
-  ieDn:['интерьер день','интерьер ночь','натура день','натура ночь','интерьер вечер'],
-  angle:['прямой','низкий угол','верхний угол','рандом','с плеча','прямой на уровне глаз'],
-  equipment:['РУКИ','ШТАТИВ','Стедикам','Слайдер','Кран','Дрон'],
-  cameraMove:['статика','легкий наезд','легкий отъезд','панорама','рваная съемка','3 синхрона','x']
+// ===== DATA MODEL =====
+var FIELDS = ['shotNo','ieDn','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
+var SEL = {
+  ieDn:['интерьер день','интерьер ночь','натура день','натура ночь','интерьер вечер','натура вечер'],
+  angle:['прямой','низкий угол','верхний угол','рандом','с плеча','прямой на уровне глаз','субъективный'],
+  equipment:['РУКИ','ШТАТИВ','Слайдер','Стабилизатор','Стедикам','Кран','Дрон','ГРИП'],
+  cameraMove:['статика','легкий наезд','легкий отъезд','панорама','рваная съемка','3 синхрона','ручная камера','x']
 };
 
+function rowIE(row) {
+  var v = (row.ieDn||'').toLowerCase();
+  if (v.includes('интерьер') && v.includes('ноч')) return 'ie-int-night';
+  if (v.includes('интерьер') && v.includes('ден')) return 'ie-int-day';
+  if (v.includes('натура') && v.includes('ноч')) return 'ie-ext-night';
+  if (v.includes('натура') && v.includes('ден')) return 'ie-ext-day';
+  if (v.includes('интерьер') && v.includes('веч')) return 'ie-int-night';
+  if (v.includes('натура') && v.includes('веч')) return 'ie-ext-night';
+  return '';
+}
+
+// Projects
+var projects = {};
+var currentProj = 'default';
 var rows = [];
 var nextId = 1;
+var meta = { director:'', operator:'', producer:'', grip:'' };
 
 // ===== STORAGE =====
-function save() {
-  localStorage.setItem('dir_script', JSON.stringify({
-    project: document.getElementById('pn').value, rows: rows, nextId: nextId
-  }));
+function saveAll() {
+  localStorage.setItem('dir_script_projects', JSON.stringify(projects));
+  localStorage.setItem('dir_script_current', currentProj);
 }
-function load() {
-  var r = localStorage.getItem('dir_script');
-  if (!r) return false;
-  var d = JSON.parse(r);
-  rows = d.rows || []; nextId = d.nextId || 1;
-  document.getElementById('pn').value = d.project || '';
-  return true;
+
+function loadAll() {
+  var p = localStorage.getItem('dir_script_projects');
+  if (p) projects = JSON.parse(p);
+  currentProj = localStorage.getItem('dir_script_current') || 'default';
+  if (!projects[currentProj]) projects[currentProj] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'', grip:'' } };
+}
+
+function loadProject() {
+  var p = projects[currentProj];
+  rows = p.rows || [];
+  nextId = p.nextId || 1;
+  meta = p.meta || { director:'', operator:'', producer:'', grip:'' };
+  document.getElementById('crDir').value = meta.director || '';
+  document.getElementById('crOp').value = meta.operator || '';
+  document.getElementById('crProd').value = meta.producer || '';
+  document.getElementById('crGrip').value = meta.grip || '';
+}
+
+function saveProject() {
+  projects[currentProj] = { rows:rows, nextId:nextId, meta:meta };
+  saveAll();
+}
+
+function switchProject(name) {
+  currentProj = name;
+  localStorage.setItem('dir_script_current', name);
+  loadProject();
+  render();
+  updateProjectSelector();
+}
+
+function newProject() {
+  var name = prompt('Название нового проекта:');
+  if (!name) return;
+  if (projects[name]) { alert('Уже есть'); return; }
+  projects[name] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'', grip:'' } };
+  currentProj = name;
+  localStorage.setItem('dir_script_current', name);
+  loadProject();
+  render();
+  updateProjectSelector();
+}
+
+function updateProjectSelector() {
+  var sel = document.getElementById('projSel');
+  sel.innerHTML = '';
+  Object.keys(projects).forEach(function(k) {
+    sel.innerHTML += '<option value="'+k+'"'+(k===currentProj?' selected':'')+'>'+k+'</option>';
+  });
+}
+
+function saveMeta() {
+  meta.director = document.getElementById('crDir').value;
+  meta.operator = document.getElementById('crOp').value;
+  meta.producer = document.getElementById('crProd').value;
+  meta.grip = document.getElementById('crGrip').value;
+  saveProject();
 }
 
 // ===== RENDER =====
+var selectedRows = {};
+var lastClicked = -1;
+
 function render() {
   var h = '';
   rows.forEach(function(r, i) {
-    h += '<tr id="r-'+r.id+'">';
-    h += '<td class="row-num">'+(i+1)+'</td>';
+    var cls = rowIE(r);
+    if (selectedRows[r.id]) cls += ' selected';
+    h += '<tr class="'+cls+'" id="r-'+r.id+'">';
+    // Checkbox
+    h += '<td class="chk"><input type="checkbox" onchange="toggleRow('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'></td>';
+    // Num
+    h += '<td class="num">'+(i+1)+'</td>';
+    // Fields
     FIELDS.forEach(function(f) {
       var v = r[f] || '';
-      if (SEL_FIELDS[f]) {
+      if (SEL[f]) {
         var opts = '<option value="">—</option>';
-        SEL_FIELDS[f].forEach(function(o) {
-          opts += '<option value="'+o+'"'+(o===v?' selected':'')+'>'+o+'</option>';
-        });
-        h += '<td><select onchange="upd('+r.id+',\''+f+'\',this.value)">'+opts+'</select></td>';
+        SEL[f].forEach(function(o) { opts += '<option value="'+o+'"'+(o===v?' selected':'')+'>'+o+'</option>'; });
+        h += '<td><select onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+opts+'</select></td>';
       } else if (f === 'action' || f === 'notes' || f === 'opNotes' || f === 'text') {
         h += '<td><textarea onchange="upd('+r.id+',\''+f+'\',this.value)" rows="2">'+esc(v)+'</textarea></td>';
       } else {
         h += '<td><input value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)"></td>';
       }
     });
-    // Storyboard cell
-    h += '<td class="sb-cell"><div class="sb-thumbs">';
+    // Storyboard
+    h += '<td class="sb"><div class="sb-row">';
     var sbs = r.storyboard || [];
-    for (var si = 0; si < 3; si++) {
+    for (var si = 0; si < 4; si++) {
       var img = sbs[si] || '';
-      h += '<div class="sb-thumb'+(img?'':' sb-add-btn')+'" onclick="addSB('+r.id+','+si+')">';
-      h += img ? '<img src="'+img+'">' : '+';
+      h += '<div class="sb-slot'+(img?' has-img':'')+'" onclick="if(!'+(img?'true':'false')+')addSB('+r.id+','+si+')" id="sb-'+r.id+'-'+si+'"';
+      h += ' ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event,'+r.id+','+si+')">';
+      if (img) {
+        h += '<img src="'+img+'" onclick="viewImg(event,\''+img+'\')">';
+        h += '<button class="del" onclick="event.stopPropagation();delSB('+r.id+','+si+')">✕</button>';
+      } else { h += '+'; }
       h += '</div>';
     }
     h += '</div></td>';
     // Actions
-    h += '<td class="row-actions">';
-    h += '<button onclick="dup('+i+')" title="Копия">⧉</button>';
-    h += '<button onclick="del('+i+')" title="Удалить" style="color:var(--accent)">✕</button>';
-    h += '</td>';
+    h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
     h += '</tr>';
   });
-  document.getElementById('tb').innerHTML = h;
+  document.getElementById('tBody').innerHTML = h;
   document.getElementById('cnt').textContent = rows.length + ' сцен';
-  save();
+  updateDelSel();
+}
+
+function recolor(id) {
+  var r = rows.find(function(x){ return x.id===id; });
+  if (!r) return;
+  var tr = document.getElementById('r-'+id);
+  if (tr) { tr.className = rowIE(r) + (selectedRows[id]?' selected':''); }
 }
 
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// ===== ACTIONS =====
+// ===== ROW ACTIONS =====
 function addRow() {
   var r = { id: nextId++, storyboard: [] };
   FIELDS.forEach(function(f){ r[f] = ''; });
   rows.push(r);
   render();
-  // Scroll to bottom
   var el = document.getElementById('r-'+r.id);
   if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  saveProject();
 }
 
-function addRows(n) {
-  for (var i = 0; i < n; i++) addRow();
-}
+function addRows(n) { for (var i=0;i<n;i++) addRow(); }
 
 function upd(id, key, val) {
   var r = rows.find(function(x){ return x.id===id; });
-  if (r) { r[key] = val; save(); }
+  if (r) { r[key] = val; saveProject(); }
 }
 
 function del(i) {
   if (!confirm('Удалить строку #'+(i+1)+'?')) return;
-  rows.splice(i, 1); render();
+  var id = rows[i].id;
+  delete selectedRows[id];
+  rows.splice(i,1);
+  render();
+  saveProject();
 }
 
 function dup(i) {
   var r = JSON.parse(JSON.stringify(rows[i]));
   r.id = nextId++;
-  rows.splice(i+1, 0, r); render();
+  rows.splice(i+1,0,r);
+  render();
+  saveProject();
+}
+
+// ===== MULTI-SELECT =====
+function toggleRow(id, e) {
+  if (e.target.checked) selectedRows[id] = true;
+  else delete selectedRows[id];
+  render();
+}
+
+function delSelected() {
+  var ids = Object.keys(selectedRows);
+  if (ids.length === 0) return;
+  if (!confirm('Удалить '+ids.length+' выбранных строк?')) return;
+  ids.forEach(function(id) { rows = rows.filter(function(r){ return r.id != id; }); });
+  selectedRows = {};
+  render();
+  saveProject();
+}
+
+function updateDelSel() {
+  var btn = document.getElementById('delSel');
+  var n = Object.keys(selectedRows).length;
+  btn.style.display = n > 0 ? '' : 'none';
+  btn.textContent = '✕ '+n;
 }
 
 // ===== STORYBOARD =====
@@ -232,31 +356,41 @@ function addSB(id, slot) {
   inp.type = 'file'; inp.accept = 'image/*';
   inp.onchange = function() {
     var f = inp.files[0]; if (!f) return;
-    if (f.size > 500000) {
-      resize(f, 600, function(u){ saveSB(id, slot, u); });
-    } else {
-      var fr = new FileReader();
-      fr.onload = function(e){ saveSB(id, slot, e.target.result); };
-      fr.readAsDataURL(f);
-    }
+    processImg(f, function(u){ saveSB(id, slot, u); });
   };
   inp.click();
 }
 
-function resize(file, max, cb) {
-  var r = new FileReader();
-  r.onload = function(e) {
-    var img = new Image();
-    img.onload = function() {
-      var w=img.width,h=img.height,ratio=Math.min(max/w,max/h);
-      w=Math.round(w*ratio);h=Math.round(h*ratio);
-      var c=document.createElement('canvas');c.width=w;c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
-      cb(c.toDataURL('image/jpeg',0.65));
+function dOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function dDrop(e, id, slot) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  var file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  processImg(file, function(u){ saveSB(id, slot, u); });
+}
+
+function processImg(file, cb) {
+  if (file.size > 800000) {
+    var r = new FileReader();
+    r.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var w=img.width,h=img.height,ratio=Math.min(600/w,600/h);
+        w=Math.round(w*ratio);h=Math.round(h*ratio);
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        cb(c.toDataURL('image/jpeg',0.65));
+      };
+      img.src=e.target.result;
     };
-    img.src=e.target.result;
-  };
-  r.readAsDataURL(file);
+    r.readAsDataURL(file);
+  } else {
+    var fr = new FileReader();
+    fr.onload = function(e){ cb(e.target.result); };
+    fr.readAsDataURL(file);
+  }
 }
 
 function saveSB(id, slot, url) {
@@ -265,25 +399,41 @@ function saveSB(id, slot, url) {
   if (!r.storyboard) r.storyboard = [];
   r.storyboard[slot] = url;
   render();
+  saveProject();
+}
+
+function delSB(id, slot) {
+  var r = rows.find(function(x){ return x.id===id; });
+  if (!r || !r.storyboard) return;
+  r.storyboard[slot] = null;
+  render();
+  saveProject();
+}
+
+function viewImg(e, url) {
+  e.stopPropagation();
+  var m = document.createElement('div');
+  m.className = 'modal';
+  m.innerHTML = '<img src="'+url+'">';
+  m.onclick = function(){ m.remove(); };
+  document.body.appendChild(m);
 }
 
 // ===== IMPORT/EXPORT =====
 function exportCSV() {
-  var header = ['SHOT','I/E D/N','Размер кадра','Субъект','Угол','Линза','Оборудование','Движение камеры','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
-  var lines = [header.join(',')];
+  var hdr = ['SHOT','I/E D/N','Размер кадра','Субъект','Угол','Линза','Оборудование','Движение камеры','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
+  var lines = [hdr.join(',')];
   rows.forEach(function(r) {
-    var row = FIELDS.map(function(f){ return '"'+(r[f]||'').replace(/"/g,'""')+'"'; });
-    lines.push(row.join(','));
+    lines.push(FIELDS.map(function(f){ return '"'+(r[f]||'').replace(/"/g,'""')+'"'; }).join(','));
   });
-  download('\uFEFF'+lines.join('\n'), (document.getElementById('pn').value||'scenario')+'.csv', 'text/csv');
+  dl('\uFEFF'+lines.join('\n'), currentProj+'.csv', 'text/csv');
 }
 
 function exportJSON() {
-  var d = { project: document.getElementById('pn').value, rows: rows };
-  download(JSON.stringify(d,null,2), (document.getElementById('pn').value||'scenario')+'.json', 'application/json');
+  dl(JSON.stringify({project:currentProj,meta:meta,rows:rows},null,2), currentProj+'.json', 'application/json');
 }
 
-function download(content, name, type) {
+function dl(content, name, type) {
   var b = new Blob([content], {type:type});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(b); a.download = name; a.click();
@@ -295,10 +445,27 @@ function loadFile(inp) {
   r.onload = function(e) {
     if (f.name.endsWith('.json')) {
       var d = JSON.parse(e.target.result);
-      document.getElementById('pn').value = d.project || '';
+      if (d.project && d.project !== currentProj) {
+        if (confirm('Импортировать как новый проект "'+d.project+'"?')) {
+          projects[d.project] = { rows:d.rows||[], nextId:Math.max.apply(null,d.rows.map(function(x){return x.id}).concat([0]))+1, meta:d.meta||meta };
+          currentProj = d.project;
+          localStorage.setItem('dir_script_current', d.project);
+          loadProject();
+          render();
+          updateProjectSelector();
+          saveAll();
+          return;
+        }
+      }
+      meta = d.meta || meta;
+      document.getElementById('crDir').value = meta.director || '';
+      document.getElementById('crOp').value = meta.operator || '';
+      document.getElementById('crProd').value = meta.producer || '';
+      document.getElementById('crGrip').value = meta.grip || '';
       rows = d.rows || [];
-      nextId = Math.max.apply(null, rows.map(function(x){return x.id;}).concat([0]))+1;
+      nextId = Math.max.apply(null,rows.map(function(x){return x.id}).concat([0]))+1;
       render();
+      saveProject();
     } else {
       importCSV(e.target.result);
     }
@@ -310,27 +477,28 @@ function loadFile(inp) {
 function importCSV(content) {
   var lines = content.split('\n');
   if (lines.length < 2) return;
-  var map = {'SHOT':'shotNo','I/E D/N':'ieDn','Размер кадра':'frame','Субъект':'subject',
-    'Угол':'angle','Линза':'lens','Оборудование':'equipment','Движение камеры':'cameraMove',
-    'Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
-    'Тайминг':'timing','Локация':'location','SHOT #':'shotNo','Хронометраж':'timing'};
+  var map = {'SHOT':'shotNo','SHOT #':'shotNo','I/E D/N':'ieDn','Размер кадра':'frame','Субъект':'subject',
+    'Угол':'angle','Линза':'lens','Оборудование':'equipment','Оборуд.':'equipment','Движение камеры':'cameraMove',
+    'Камера':'cameraMove','Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
+    'Тайминг':'timing','тайминг трека':'timing','Локация':'location','локация':'location'};
   var hdr = lines[0].split(',').map(function(x){ return x.replace(/"/g,'').trim(); });
   var imported = [];
-  for (var i = 1; i < lines.length; i++) {
+  for (var i=1;i<lines.length;i++) {
     var cols = parseCSV(lines[i]);
-    if (cols.length === 0) continue;
+    if (cols.length===0||(cols.length===1&&!cols[0])) continue;
     var r = { id: nextId++, storyboard: [] };
     FIELDS.forEach(function(f){ r[f] = ''; });
-    for (var j = 0; j < Math.min(cols.length, hdr.length); j++) {
+    for (var j=0;j<Math.min(cols.length,hdr.length);j++) {
       var key = map[hdr[j]]; if (key) r[key] = cols[j];
     }
+    if (cols[0] && /^\d+$/.test(cols[0].trim()) && !r.shotNo) r.shotNo = cols[0];
     imported.push(r);
   }
-  if (imported.length > 0) {
-    if (rows.length > 0 && confirm('Добавить к существующим?')) {
-      rows = rows.concat(imported);
-    } else { rows = imported; }
+  if (imported.length>0) {
+    if (rows.length>0 && confirm('Добавить к существующим?')) rows=rows.concat(imported);
+    else rows=imported;
     render();
+    saveProject();
   }
 }
 
@@ -338,17 +506,17 @@ function parseCSV(line) {
   var res=[],cur='',q=false;
   for (var i=0;i<line.length;i++) {
     var ch=line[i];
-    if (q) { if (ch==='"') { if (line[i+1]==='"') { cur+='"'; i++; } else q=false; } else cur+=ch; }
-    else { if (ch==='"') q=true; else if (ch===',') { res.push(cur.trim()); cur=''; } else cur+=ch; }
+    if (q){ if(ch==='"'){ if(line[i+1]==='"'){ cur+='"';i++; } else q=false; } else cur+=ch; }
+    else { if(ch==='"') q=true; else if(ch===','){ res.push(cur.trim());cur=''; } else cur+=ch; }
   }
   res.push(cur.trim()); return res;
 }
 
-// Save project name
-document.getElementById('pn').addEventListener('input', save);
-
-// Init
-if (!load()) { addRows(5); render(); } else { render(); }
+// ===== INIT =====
+loadAll();
+loadProject();
+render();
+updateProjectSelector();
 </script>
 </body>
 </html>
