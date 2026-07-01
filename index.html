@@ -30,83 +30,89 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .crew input{background:var(--input);border:1px solid var(--border);color:var(--text);border-radius:5px;padding:5px 8px;font-size:12px;width:140px;outline:none}
 .crew input:focus{border-color:var(--accent)}
 
-/* Row size controls */
+/* Size controls */
 .sz{padding:4px 12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .sz span{font-size:10px;color:var(--muted)}
 .sz input[type=range]{width:80px;accent-color:var(--accent)}
 
-/* ===== TABLE CONTAINER ===== */
-/* This is the key: separate scroll container so sticky thead works */
-.twrap{position:relative;margin:0 8px 8px;max-height:calc(100vh - 160px);overflow:auto;border:1px solid var(--border);border-radius:4px}
-table{border-collapse:collapse;min-width:max-content;font-size:12px;width:100%}
+/* TABLE */
+.twrap{position:relative;margin:0 8px 8px;max-height:calc(100vh - 170px);overflow:auto;border:1px solid var(--border);border-radius:4px}
+table{border-collapse:collapse;min-width:max-content;font-size:var(--fs,11px);width:100%}
 thead{position:sticky;top:0;z-index:10}
-th,td{border:1px solid var(--border);padding:5px 6px;text-align:left;vertical-align:top}
-th{font-size:9px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;background:var(--card);color:var(--muted)}
-td input,td textarea,td select{width:100%;background:transparent;border:none;color:var(--text);font-size:11px;font-family:inherit;padding:2px;outline:none}
-td textarea{min-height:36px;resize:none}
-td select{appearance:none;cursor:pointer;color:#000;background:var(--input);border-radius:4px;padding:4px 6px}
-td select option{color:#000;background:#fff}
-td input:focus,td textarea:focus,td select:focus{outline:1px solid var(--accent);outline-offset:-1px}
+th,td{border:1px solid var(--border);padding:0;text-align:left;vertical-align:top;position:relative}
+th{font-size:9px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;background:var(--card);color:var(--muted);padding:4px 6px;overflow:hidden}
+td{padding:0;}
 
-td.num{text-align:center;font-weight:800;font-size:11px;color:var(--accent);min-width:28px;padding:5px 2px}
-td.chk{min-width:22px;width:22px;text-align:center;padding:4px 0}
+/* Resize handles */
+.resize-r{position:absolute;right:-3px;top:0;bottom:0;width:6px;cursor:col-resize;z-index:5}
+.resize-b{position:absolute;bottom:-3px;left:0;right:0;height:6px;cursor:row-resize;z-index:5}
+
+/* Cell inputs */
+.cell-inner{width:100%;height:100%;min-height:40px;padding:4px 6px;background:transparent;border:none;color:var(--text);font-size:var(--fs,11px);font-family:inherit;outline:none;display:block;line-height:1.4}
+textarea.cell-inner{resize:none;min-height:40px}
+select.cell-inner{appearance:none;cursor:pointer;color:#000;background:var(--input);border-radius:0;min-height:30px}
+select.cell-inner option{color:#000;background:#fff}
+.cell-inner:focus{outline:1px solid var(--accent);outline-offset:-1px;z-index:2;position:relative}
+
+td.num{text-align:center;font-weight:800;font-size:var(--fs,11px);color:var(--accent);min-width:28px;width:28px;padding:4px 2px}
+td.chk{min-width:22px;width:22px;text-align:center;vertical-align:middle;padding:0}
 td.chk input{width:14px;height:14px;accent-color:var(--accent)}
-td.act{min-width:52px;text-align:center;white-space:nowrap}
+td.act{min-width:52px;text-align:center;vertical-align:middle;padding:2px}
 td.act button{padding:2px 5px;border-radius:3px;border:1px solid var(--border);background:var(--input);color:var(--muted);cursor:pointer;font-size:9px;margin:1px}
 td.act button:active{color:var(--accent)}
 
-/* Color rows by I/E D/N */
+/* Colors */
 tr.ie-int-night td{background:rgba(10,10,40,0.45)}
-tr.ie-int-day td{background:rgba(15,35,15,0.35)}
+tr.ie-int-day td{background:rgba(18,40,18,0.35)}
 tr.ie-ext-night td{background:rgba(5,10,40,0.55)}
 tr.ie-ext-day td{background:rgba(40,25,10,0.35)}
-tr.selected td{background:rgba(233,69,96,0.15)!important}
+tr.selected td{background:rgba(233,69,96,0.18)!important}
 
-/* Storyboard cell */
-td.sb{min-width:120px;width:160px}
-.sb-zone{display:flex;flex-direction:column;gap:4px;min-height:60px}
-.sb-slot{width:100%;min-height:80px;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;position:relative;transition:.15s}
-.sb-slot img{width:100%;height:auto;display:block}
+/* SB */
+td.sb{padding:4px}
+.sb-zone{display:flex;flex-direction:column;gap:3px}
+.sb-slot{width:100%;min-height:90px;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
+.sb-slot img{width:100%;display:block}
 .sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
-.sb-slot .del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
-.sb-slot.has-img .del{display:flex}
-.sb-slot:hover .del{display:flex}
+.sb-slot .del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.sb-slot.has-img:hover .del,.sb-slot.has-img .del{display:flex}
+.sb-slot.sb-new{min-height:36px;border-style:dotted}
 
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:200;cursor:pointer}
 .modal img{max-width:95vw;max-height:95vh;border-radius:8px}
 
 /* Project menu */
+.proj-wrap{position:relative}
 .proj-actions{display:none;position:absolute;top:100%;left:0;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:50;min-width:160px;padding:4px}
 .proj-actions button{display:block;width:100%;padding:6px 10px;background:transparent;border:none;color:var(--text);font-size:11px;cursor:pointer;text-align:left;font-family:inherit;border-radius:4px}
 .proj-actions button:hover{background:rgba(255,255,255,0.05)}
 .proj-actions button.danger{color:var(--accent)}
-.proj-wrap{position:relative}
 
 /* Print */
 @media print{
   body{background:#fff;color:#000;font-size:9px}
-  .tb,.crew,.sz,.act,.chk,.del,.sb-zone,.btn{display:none!important}
+  .tb,.crew,.sz,.act,.chk,.del,.sb-zone,.btn,.resize-r,.resize-b{display:none!important}
   .twrap{max-height:none;overflow:visible;border:none;margin:0}
   table{font-size:9px;width:100%}
   th,td{border-color:#000;color:#000;padding:2px 4px}
-  th{background:#eee}
-  td input,td textarea{color:#000}
-  td select{color:#000;background:transparent;padding:0}
+  th{background:#eee;padding:2px 4px}
+  td{padding:2px 4px}
+  .cell-inner{color:#000;font-size:9px;min-height:auto;padding:0}
+  select.cell-inner{color:#000;background:transparent;padding:0}
   tr td{background:transparent!important}
   td.sb{min-width:60px;width:80px}
-  .sb-slot{min-height:40px}
+  .sb-slot{min-height:40px;font-size:16px}
   @page{margin:8mm;size:A4 landscape}
 }
 </style>
 </head>
 <body>
 
-<!-- TOOLBAR -->
 <div class="tb">
   <h1>🎬 Сценарий</h1>
   <div class="proj-wrap">
-    <select class="project" id="projSel" onchange="switchProject(this.value)"></select>
+    <select class="project" id="projSel"></select>
     <div class="proj-actions" id="projActions">
       <button onclick="renameProject()">✏️ Переименовать</button>
       <button onclick="deleteProject()" class="danger">🗑 Удалить</button>
@@ -118,35 +124,31 @@ td.sb{min-width:120px;width:160px}
   <button class="btn s" onclick="newProject()">🆕 Проект</button>
   <button class="btn g" onclick="exportCSV()">📥 CSV</button>
   <button class="btn s" onclick="exportJSON()">💾 JSON</button>
-  <label class="btn s" style="cursor:pointer">📂 Импорт <input type="file" accept=".csv,.json" style="display:none" onchange="loadFile(this)"></label>
+  <label class="btn s" style="cursor:pointer">📂 <input type="file" accept=".csv,.json" style="display:none" onchange="loadFile(this)"></label>
   <button class="btn s" onclick="window.print()">🖨️</button>
-  <button class="btn danger s" onclick="delSelected()" id="delSel" style="display:none">✕ Удалить</button>
+  <button class="btn danger s" onclick="delSelected()" id="delSel" style="display:none"></button>
   <span id="cnt" style="font-size:11px;color:var(--muted);margin-left:4px"></span>
 </div>
 
-<!-- CREW -->
 <div class="crew">
   <label>Режиссёр <input id="crDir" placeholder="Хахуза" oninput="saveMeta()"></label>
   <label>Оператор <input id="crOp" placeholder="Ярослав Савельев" oninput="saveMeta()"></label>
   <label>Продюсер <input id="crProd" placeholder="" oninput="saveMeta()"></label>
 </div>
 
-<!-- SIZE CONTROLS -->
 <div class="sz">
-  <span>Высота строк:</span><input type="range" min="20" max="200" value="60" id="rowH" oninput="setRowH(this.value)">
-  <span id="rowHVal">60px</span>
-  <span style="margin-left:12px">Ширина столбцов:</span><input type="range" min="40" max="200" value="80" id="colW" oninput="setColW(this.value)">
-  <span id="colWVal">80px</span>
+  <span>Шрифт:</span><input type="range" min="8" max="18" value="11" id="fontSz" oninput="setFont(this.value)">
+  <span id="fontVal">11px</span>
 </div>
 
-<!-- TABLE -->
 <div class="twrap" id="twrap">
   <table>
     <thead><tr id="theadRow">
-      <th style="width:22px;min-width:22px;max-width:22px"></th>
-      <th style="width:28px;min-width:28px;max-width:28px">#</th>
+      <th style="width:22px;min-width:22px"></th>
+      <th style="width:28px;min-width:28px">#</th>
       <th>SHOT</th>
-      <th>I/E D/N</th>
+      <th>Инт/Нат</th>
+      <th>Время</th>
       <th>Кадр</th>
       <th>Субъект</th>
       <th>Угол</th>
@@ -167,22 +169,28 @@ td.sb{min-width:120px;width:160px}
 </div>
 
 <script>
-var FIELDS = ['shotNo','ieDn','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
+// ===== DATA MODEL =====
+// Fields: shotNo, interior, timeOfDay, frame, subject, angle, lens, equipment, cameraMove
+//          action, notes, opNotes, text, timing, location
+var FIELDS = ['shotNo','interior','timeOfDay','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
 var SEL = {
-  ieDn:['интерьер день','интерьер ночь','натура день','натура ночь','интерьер вечер','натура вечер'],
-  angle:['прямой','низкий угол','верхний угол','рандом','с плеча','прямой на уровне глаз','субъективный'],
-  equipment:['РУКИ','ШТАТИВ','Слайдер','Стабилизатор','Стедикам','Кран','Дрон','ГРИП'],
-  // cameraMove — обычное текстовое поле, НЕ select
+  interior:['интерьер','натура'],
+  timeOfDay:['утро','день','вечер','ночь'],
+  equipment:['РУКИ','ШТАТИВ','Слайдер','Стабилизатор','Стедикам','Кран','Дрон','ГРИП']
 };
+var TEXTAREA_FIELDS = { action:1, notes:1, opNotes:1, text:1 };
 
 function rowIE(row) {
-  var v = (row.ieDn||'').toLowerCase();
-  if (v.includes('интерьер') && v.includes('ноч')) return 'ie-int-night';
-  if (v.includes('интерьер') && v.includes('ден')) return 'ie-int-day';
-  if (v.includes('натура') && v.includes('ноч')) return 'ie-ext-night';
-  if (v.includes('натура') && v.includes('ден')) return 'ie-ext-day';
-  if (v.includes('интерьер') && v.includes('веч')) return 'ie-int-night';
-  if (v.includes('натура') && v.includes('веч')) return 'ie-ext-night';
+  var i = (row.interior||'').toLowerCase();
+  var t = (row.timeOfDay||'').toLowerCase();
+  if (i.includes('интерьер') && (t.includes('ноч')||t.includes('веч'))) return 'ie-int-night';
+  if (i.includes('интерьер') && t.includes('ден')) return 'ie-int-day';
+  if (i.includes('натура') && (t.includes('ноч')||t.includes('веч'))) return 'ie-ext-night';
+  if (i.includes('натура') && t.includes('ден')) return 'ie-ext-day';
+  if (i.includes('интерьер')) return 'ie-int-day';
+  if (i.includes('натура')) return 'ie-ext-day';
+  if (t.includes('ноч')||t.includes('веч')) return 'ie-int-night';
+  if (t.includes('утр')||t.includes('ден')) return 'ie-int-day';
   return '';
 }
 
@@ -192,39 +200,47 @@ var currentProj = 'default';
 var rows = [];
 var nextId = 1;
 var meta = { director:'', operator:'', producer:'' };
-var rowHeight = 60;
-var colWidth = 80;
+var selectedRows = {};
+var fontSize = 11;
+
+// Column widths (stored per-column, keyed by field name + special keys like 'num','chk','sb','act')
+var colSizes = {};
+var rowHeights = {}; // per row id
 
 // ===== STORAGE =====
 function saveAll() {
   localStorage.setItem('dir_script_projects', JSON.stringify(projects));
   localStorage.setItem('dir_script_current', currentProj);
-  localStorage.setItem('dir_script_rowH', rowHeight);
-  localStorage.setItem('dir_script_colW', colWidth);
+  localStorage.setItem('dir_script_fontSize', fontSize);
 }
 function loadAll() {
   var p = localStorage.getItem('dir_script_projects');
   if (p) projects = JSON.parse(p);
   currentProj = localStorage.getItem('dir_script_current') || 'default';
   if (!projects[currentProj]) projects[currentProj] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' } };
-  rowHeight = parseInt(localStorage.getItem('dir_script_rowH')) || 60;
-  colWidth = parseInt(localStorage.getItem('dir_script_colW')) || 80;
+  fontSize = parseInt(localStorage.getItem('dir_script_fontSize')) || 11;
 }
 function loadProject() {
   var p = projects[currentProj];
   rows = p.rows || [];
   nextId = p.nextId || 1;
   meta = p.meta || { director:'', operator:'', producer:'' };
+  colSizes = p.colSizes || {};
+  rowHeights = p.rowHeights || {};
   document.getElementById('crDir').value = meta.director || '';
   document.getElementById('crOp').value = meta.operator || '';
   document.getElementById('crProd').value = meta.producer || '';
+  document.getElementById('fontSz').value = fontSize;
+  document.getElementById('fontVal').textContent = fontSize+'px';
+  document.documentElement.style.setProperty('--fs', fontSize+'px');
 }
 function saveProject() {
-  projects[currentProj] = { rows:rows, nextId:nextId, meta:meta };
+  projects[currentProj] = { rows:rows, nextId:nextId, meta:meta, colSizes:colSizes, rowHeights:rowHeights };
   saveAll();
 }
 
 function switchProject(name) {
+  if (name === '__new__') { newProject(); return; }
   currentProj = name;
   localStorage.setItem('dir_script_current', name);
   loadProject();
@@ -236,7 +252,7 @@ function newProject() {
   var name = prompt('Название нового проекта:');
   if (!name) return;
   if (projects[name]) { alert('Уже есть'); return; }
-  projects[name] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' } };
+  projects[name] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' }, colSizes:{}, rowHeights:{} };
   currentProj = name;
   localStorage.setItem('dir_script_current', name);
   loadProject();
@@ -247,8 +263,8 @@ function newProject() {
 function renameProject() {
   var old = currentProj;
   var name = prompt('Новое название:', old);
-  if (!name || name === old) return;
-  if (projects[name]) { alert('Проект с таким названием уже есть'); return; }
+  if (!name || name===old) return;
+  if (projects[name]) { alert('Уже есть'); return; }
   projects[name] = projects[old];
   delete projects[old];
   currentProj = name;
@@ -258,10 +274,10 @@ function renameProject() {
 }
 function deleteProject() {
   var keys = Object.keys(projects);
-  if (keys.length <= 1) { alert('Нельзя удалить последний проект'); return; }
-  if (!confirm('Удалить проект «'+currentProj+'»? Данные будут потеряны.')) return;
+  if (keys.length<=1) { alert('Нельзя удалить последний проект'); return; }
+  if (!confirm('Удалить «'+currentProj+'»?')) return;
   delete projects[currentProj];
-  currentProj = keys.find(function(k){ return k !== currentProj; });
+  currentProj = keys.find(function(k){ return k!==currentProj; });
   localStorage.setItem('dir_script_current', currentProj);
   saveAll();
   loadProject();
@@ -269,30 +285,20 @@ function deleteProject() {
   render();
   updateProjectSelector();
 }
-
 function updateProjectSelector() {
   var sel = document.getElementById('projSel');
   sel.innerHTML = '';
   Object.keys(projects).forEach(function(k) {
     sel.innerHTML += '<option value="'+k+'"'+(k===currentProj?' selected':'')+'>'+k+'</option>';
   });
-  // Add "new project" option at end
   sel.innerHTML += '<option value="__new__" style="color:var(--accent)">+ Новый проект</option>';
 }
-
 document.getElementById('projSel').addEventListener('change', function() {
-  if (this.value === '__new__') {
-    newProject();
-  } else {
-    switchProject(this.value);
-  }
+  switchProject(this.value);
 });
-
-// Project context menu
 document.getElementById('projSel').addEventListener('contextmenu', function(e) {
   e.preventDefault();
-  var menu = document.getElementById('projActions');
-  menu.style.display = 'block';
+  document.getElementById('projActions').style.display = 'block';
 });
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.proj-wrap')) document.getElementById('projActions').style.display = 'none';
@@ -305,54 +311,48 @@ function saveMeta() {
   saveProject();
 }
 
-// ===== SIZE =====
-function setRowH(v) {
-  rowHeight = parseInt(v);
-  document.getElementById('rowHVal').textContent = v+'px';
-  document.querySelectorAll('#tBody td textarea').forEach(function(t){ t.style.minHeight = v+'px'; });
-  saveAll();
-}
-function setColW(v) {
-  colWidth = parseInt(v);
-  document.getElementById('colWVal').textContent = v+'px';
-  var ths = document.querySelectorAll('#theadRow th');
-  for (var i=2;i<ths.length-1;i++) { ths[i].style.width=colWidth+'px'; ths[i].style.minWidth=colWidth+'px'; }
+function setFont(v) {
+  fontSize = parseInt(v);
+  document.getElementById('fontVal').textContent = v+'px';
+  document.documentElement.style.setProperty('--fs', v+'px');
   saveAll();
 }
 
 // ===== RENDER =====
-var selectedRows = {};
-
 function render() {
   var h = '';
   rows.forEach(function(r, i) {
     var cls = rowIE(r);
     if (selectedRows[r.id]) cls += ' selected';
+    var rh = rowHeights[r.id] || '';
     h += '<tr class="'+cls+'" id="r-'+r.id+'">';
+    // Checkbox
     h += '<td class="chk"><input type="checkbox" onchange="toggleRow('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'></td>';
+    // Num
     h += '<td class="num">'+(i+1)+'</td>';
+    // Fields
     FIELDS.forEach(function(f) {
       var v = r[f] || '';
+      var style = '';
+      if (rh) style = ' style="height:'+rh+'px"';
       if (SEL[f]) {
         var opts = '<option value="">—</option>';
         SEL[f].forEach(function(o) { opts += '<option value="'+esc(o)+'"'+(o===v?' selected':'')+'>'+esc(o)+'</option>'; });
-        h += '<td><select onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+opts+'</select></td>';
-      } else if (f === 'action' || f === 'notes' || f === 'opNotes' || f === 'text') {
-        h += '<td><textarea onchange="upd('+r.id+',\''+f+'\',this.value)" rows="2" style="min-height:'+rowHeight+'px">'+esc(v)+'</textarea></td>';
+        h += '<td'+style+'><select class="cell-inner" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+opts+'</select>';
+        h += '<div class="resize-r" onmousedown="colResizeStart(event,\''+f+'\')"></div></td>';
+      } else if (TEXTAREA_FIELDS[f]) {
+        h += '<td'+(rh?' style="height:'+rh+'px"':'')+'><textarea class="cell-inner" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+(rh||40)+'px">'+esc(v)+'</textarea>';
+        h += '<div class="resize-r" onmousedown="colResizeStart(event,\''+f+'\')"></div></td>';
       } else {
-        h += '<td><input value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)"></td>';
+        h += '<td'+style+'><input class="cell-inner" value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)">';
+        h += '<div class="resize-r" onmousedown="colResizeStart(event,\''+f+'\')"></div></td>';
       }
     });
-    // Storyboard — one big slot + extras
+    // Storyboard
     h += '<td class="sb"><div class="sb-zone">';
-    var sbs = r.storyboard || [];
-    // Filter out nulls
-    var imgs = sbs.filter(function(x){ return !!x; });
-    if (imgs.length === 0) imgs = [''];
-    // Show all images
-    imgs.forEach(function(img, si) {
-      var realIdx = sbs.indexOf(img);
-      if (realIdx < 0) realIdx = si;
+    var sbs = (r.storyboard||[]).filter(function(x){ return !!x; });
+    if (sbs.length===0) sbs=[''];
+    sbs.forEach(function(img, si) {
       h += '<div class="sb-slot'+(img?' has-img':'')+'" id="sb-'+r.id+'-'+si+'"';
       h += ' ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDrop(event,'+r.id+','+si+')">';
       if (img) {
@@ -363,20 +363,30 @@ function render() {
       }
       h += '</div>';
     });
-    // Add empty slot for new drop
-    h += '<div class="sb-slot" style="min-height:40px" id="sb-'+r.id+'-new"';
-    h += ' ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDropNew(event,'+r.id+')">';
+    h += '<div class="sb-slot sb-new" id="sb-'+r.id+'-new" ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDropNew(event,'+r.id+')">';
     h += '<span onclick="addSBNew('+r.id+')">+</span></div>';
-    h += '</div></td>';
+    h += '</div>';
+    h += '<div class="resize-r" onmousedown="colResizeStart(event,\'sb\')"></div></td>';
     // Actions
-    h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
+    h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button>';
+    h += '<div class="resize-b" onmousedown="rowResizeStart(event,'+r.id+')"></div></td>';
     h += '</tr>';
   });
   document.getElementById('tBody').innerHTML = h;
   document.getElementById('cnt').textContent = rows.length + ' сцен';
-  // Apply sizes
-  setRowH(rowHeight);
-  setColW(colWidth);
+
+  // Apply column widths
+  var ths = document.querySelectorAll('#theadRow th');
+  var colIdx = {
+    0:'chk',1:'num',2:'shotNo',3:'interior',4:'timeOfDay',5:'frame',6:'subject',
+    7:'angle',8:'lens',9:'equipment',10:'cameraMove',11:'action',12:'notes',
+    13:'opNotes',14:'text',15:'timing',16:'location',17:'sb',18:'act'
+  };
+  for (var ci in colIdx) {
+    var key = colIdx[ci];
+    var w = colSizes[key];
+    if (w && ths[ci]) { ths[ci].style.width = w+'px'; ths[ci].style.minWidth = w+'px'; }
+  }
   updateDelSel();
 }
 
@@ -384,10 +394,82 @@ function recolor(id) {
   var r = rows.find(function(x){ return x.id===id; });
   if (!r) return;
   var tr = document.getElementById('r-'+id);
-  if (tr) { tr.className = rowIE(r) + (selectedRows[id]?' selected':''); }
+  if (tr) tr.className = rowIE(r) + (selectedRows[id]?' selected':'');
 }
 
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ===== COLUMN / ROW RESIZE =====
+var resizing = null;
+var resizeStart = 0;
+var resizeStartSize = 0;
+
+function colResizeStart(e, fieldKey) {
+  e.preventDefault();
+  e.stopPropagation();
+  resizing = { type:'col', key:fieldKey };
+  resizeStart = e.clientX;
+  // Find current width
+  var ths = document.querySelectorAll('#theadRow th');
+  var colIdx = {chk:0,num:1,shotNo:2,interior:3,timeOfDay:4,frame:5,subject:6,angle:7,lens:8,equipment:9,cameraMove:10,action:11,notes:12,opNotes:13,text:14,timing:15,location:16,sb:17,act:18};
+  var idx = colIdx[fieldKey];
+  if (idx!==undefined && ths[idx]) {
+    resizeStartSize = ths[idx].offsetWidth;
+  } else {
+    resizeStartSize = colSizes[fieldKey] || 80;
+  }
+  document.addEventListener('mousemove', onResizeMove);
+  document.addEventListener('mouseup', onResizeEnd);
+}
+
+function rowResizeStart(e, rowId) {
+  e.preventDefault();
+  e.stopPropagation();
+  resizing = { type:'row', id:rowId };
+  resizeStart = e.clientY;
+  var tr = document.getElementById('r-'+rowId);
+  resizeStartSize = tr ? tr.offsetHeight : (rowHeights[rowId] || 60);
+  document.addEventListener('mousemove', onResizeMove);
+  document.addEventListener('mouseup', onResizeEnd);
+}
+
+function onResizeMove(e) {
+  if (!resizing) return;
+  if (resizing.type === 'col') {
+    var delta = e.clientX - resizeStart;
+    var newW = Math.max(30, resizeStartSize + delta);
+    colSizes[resizing.key] = newW;
+    var ths = document.querySelectorAll('#theadRow th');
+    var colIdx = {chk:0,num:1,shotNo:2,interior:3,timeOfDay:4,frame:5,subject:6,angle:7,lens:8,equipment:9,cameraMove:10,action:11,notes:12,opNotes:13,text:14,timing:15,location:16,sb:17,act:18};
+    var idx = colIdx[resizing.key];
+    if (idx!==undefined && ths[idx]) { ths[idx].style.width = newW+'px'; ths[idx].style.minWidth = newW+'px'; }
+    // Also set on all td in this column position
+    var tds = document.querySelectorAll('#tBody tr');
+    tds.forEach(function(tr) {
+      var td = tr.children[idx];
+      if (td) td.style.width = newW+'px';
+    });
+  } else {
+    var delta = e.clientY - resizeStart;
+    var newH = Math.max(30, resizeStartSize + delta);
+    rowHeights[resizing.id] = newH;
+    var tr = document.getElementById('r-'+resizing.id);
+    if (tr) {
+      tr.style.height = newH+'px';
+      var tds = tr.querySelectorAll('td');
+      tds.forEach(function(td) { td.style.height = newH+'px'; });
+      var ta = tr.querySelectorAll('textarea.cell-inner');
+      ta.forEach(function(t) { t.style.minHeight = newH+'px'; });
+    }
+  }
+}
+
+function onResizeEnd() {
+  if (resizing) saveProject();
+  resizing = null;
+  document.removeEventListener('mousemove', onResizeMove);
+  document.removeEventListener('mouseup', onResizeEnd);
+}
 
 // ===== ROW ACTIONS =====
 function addRow() {
@@ -407,6 +489,7 @@ function upd(id, key, val) {
 function del(i) {
   if (!confirm('Удалить строку #'+(i+1)+'?')) return;
   delete selectedRows[rows[i].id];
+  delete rowHeights[rows[i].id];
   rows.splice(i,1);
   render();
   saveProject();
@@ -427,8 +510,8 @@ function toggleRow(id, e) {
 }
 function delSelected() {
   var ids = Object.keys(selectedRows);
-  if (ids.length === 0) return;
-  if (!confirm('Удалить '+ids.length+' выбранных строк?')) return;
+  if (ids.length===0) return;
+  if (!confirm('Удалить '+ids.length+' строк?')) return;
   rows = rows.filter(function(r){ return !selectedRows[r.id]; });
   selectedRows = {};
   render();
@@ -437,21 +520,19 @@ function delSelected() {
 function updateDelSel() {
   var btn = document.getElementById('delSel');
   var n = Object.keys(selectedRows).length;
-  btn.style.display = n > 0 ? '' : 'none';
+  btn.style.display = n>0 ? '' : 'none';
   btn.textContent = '✕ '+n;
 }
 
 // ===== STORYBOARD =====
 function addSB(id, si) { pickImg(function(u){ saveSB(id, si, u); }); }
 function addSBNew(id) { pickImg(function(u){ addSBSlot(id, u); }); }
-
 function pickImg(cb) {
   var inp = document.createElement('input');
   inp.type = 'file'; inp.accept = 'image/*';
   inp.onchange = function() { var f = inp.files[0]; if (f) processImg(f, cb); };
   inp.click();
 }
-
 function processImg(file, cb) {
   if (file.size > 800000) {
     var r = new FileReader();
@@ -473,19 +554,16 @@ function processImg(file, cb) {
     fr.readAsDataURL(file);
   }
 }
-
 function saveSB(id, si, url) {
   var r = rows.find(function(x){ return x.id===id; });
   if (!r) return;
   if (!r.storyboard) r.storyboard = [];
-  // Clean nulls
   r.storyboard = r.storyboard.filter(function(x){ return !!x; });
   if (si >= r.storyboard.length) r.storyboard.push(url);
   else r.storyboard[si] = url;
   render();
   saveProject();
 }
-
 function addSBSlot(id, url) {
   var r = rows.find(function(x){ return x.id===id; });
   if (!r) return;
@@ -495,16 +573,14 @@ function addSBSlot(id, url) {
   render();
   saveProject();
 }
-
 function delSB(id, si) {
   var r = rows.find(function(x){ return x.id===id; });
   if (!r || !r.storyboard) return;
   r.storyboard = r.storyboard.filter(function(x){ return !!x; });
-  r.storyboard.splice(si, 1);
+  r.storyboard.splice(si,1);
   render();
   saveProject();
 }
-
 function viewImg(e, url) {
   e.stopPropagation();
   var m = document.createElement('div');
@@ -513,8 +589,6 @@ function viewImg(e, url) {
   m.onclick = function(){ m.remove(); };
   document.body.appendChild(m);
 }
-
-// Drag & drop
 function dOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 function dDrop(e, id, si) {
   e.preventDefault();
@@ -533,15 +607,16 @@ function dDropNew(e, id) {
 
 // ===== IMPORT/EXPORT =====
 function exportCSV() {
-  var hdr = ['SHOT','I/E D/N','Размер кадра','Субъект','Угол','Линза','Оборудование','Движение камеры','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
+  var hdr = ['SHOT','Инт/Нат','Время суток','Размер кадра','Субъект','Угол','Линза','Оборудование','Движение камеры','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
+  var map = ['shotNo','interior','timeOfDay','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
   var lines = [hdr.join(',')];
   rows.forEach(function(r) {
-    lines.push(FIELDS.map(function(f){ return '"'+(r[f]||'').replace(/"/g,'""')+'"'; }).join(','));
+    lines.push(map.map(function(f){ return '"'+(r[f]||'').replace(/"/g,'""')+'"'; }).join(','));
   });
   dl('\uFEFF'+lines.join('\n'), currentProj+'.csv', 'text/csv');
 }
 function exportJSON() {
-  dl(JSON.stringify({project:currentProj,meta:meta,rows:rows},null,2), currentProj+'.json', 'application/json');
+  dl(JSON.stringify({project:currentProj,meta:meta,rows:rows,colSizes:colSizes,rowHeights:rowHeights},null,2), currentProj+'.json', 'application/json');
 }
 function dl(content, name, type) {
   var b = new Blob([content], {type:type});
@@ -554,9 +629,9 @@ function loadFile(inp) {
   r.onload = function(e) {
     if (f.name.endsWith('.json')) {
       var d = JSON.parse(e.target.result);
-      if (d.project && d.project !== currentProj) {
-        if (confirm('Импортировать как новый проект "'+d.project+'"?')) {
-          projects[d.project] = { rows:d.rows||[], nextId:Math.max.apply(null,(d.rows||[]).map(function(x){return x.id}).concat([0]))+1, meta:d.meta||meta };
+      if (d.project && d.project!==currentProj) {
+        if (confirm('Импортировать как проект "'+d.project+'"?')) {
+          projects[d.project] = { rows:d.rows||[], nextId:Math.max.apply(null,(d.rows||[]).map(function(x){return x.id}).concat([0]))+1, meta:d.meta||{}, colSizes:d.colSizes||{}, rowHeights:d.rowHeights||{} };
           currentProj = d.project;
           localStorage.setItem('dir_script_current', d.project);
           loadProject();
@@ -567,11 +642,13 @@ function loadFile(inp) {
           return;
         }
       }
-      meta = d.meta || meta;
-      document.getElementById('crDir').value = meta.director || '';
-      document.getElementById('crOp').value = meta.operator || '';
-      document.getElementById('crProd').value = meta.producer || '';
-      rows = d.rows || [];
+      meta = d.meta || {};
+      document.getElementById('crDir').value = meta.director||'';
+      document.getElementById('crOp').value = meta.operator||'';
+      document.getElementById('crProd').value = meta.producer||'';
+      rows = d.rows||[];
+      colSizes = d.colSizes||{};
+      rowHeights = d.rowHeights||{};
       nextId = Math.max.apply(null,rows.map(function(x){return x.id}).concat([0]))+1;
       selectedRows = {};
       render();
@@ -584,9 +661,9 @@ function loadFile(inp) {
 function importCSV(content) {
   var lines = content.split('\n');
   if (lines.length<2) return;
-  var map = {'SHOT':'shotNo','SHOT #':'shotNo','I/E D/N':'ieDn','Размер кадра':'frame','Субъект':'subject',
-    'Угол':'angle','Линза':'lens','Оборудование':'equipment','Оборуд.':'equipment','Движение камеры':'cameraMove',
-    'Камера':'cameraMove','Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
+  var map = {'SHOT':'shotNo','SHOT #':'shotNo','Инт/Нат':'interior','I/E D/N':'interior','Время суток':'timeOfDay','Время':'timeOfDay',
+    'Размер кадра':'frame','Кадр':'frame','Субъект':'subject','Угол':'angle','Линза':'lens','Оборудование':'equipment','Оборуд.':'equipment',
+    'Движение камеры':'cameraMove','Камера':'cameraMove','Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
     'Тайминг':'timing','тайминг трека':'timing','Локация':'location','локация':'location'};
   var hdr = lines[0].split(',').map(function(x){ return x.replace(/"/g,'').trim(); });
   var imported = [];
@@ -596,9 +673,18 @@ function importCSV(content) {
     var r = { id: nextId++, storyboard: [] };
     FIELDS.forEach(function(f){ r[f] = ''; });
     for (var j=0;j<Math.min(cols.length,hdr.length);j++) {
-      var key = map[hdr[j]]; if (key) r[key] = cols[j];
+      var key = map[hdr[j]];
+      if (key) {
+        // Handle old ieDn format: split into interior + timeOfDay
+        if (key==='interior' && cols[j] && cols[j].includes(' ')) {
+          var parts = cols[j].split(' ');
+          r.interior = parts[0];
+          if (parts.length>=2) r.timeOfDay = parts.slice(1).join(' ');
+        } else {
+          r[key] = cols[j];
+        }
+      }
     }
-    if (cols[0] && /^\d+$/.test(cols[0].trim()) && !r.shotNo) r.shotNo = cols[0];
     imported.push(r);
   }
   if (imported.length>0) {
