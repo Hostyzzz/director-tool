@@ -70,10 +70,10 @@ tr.ie-ext-day td{background:rgba(40,25,10,0.35)}
 tr.selected td{background:rgba(233,69,96,0.18)!important}
 
 /* SB */
-td.sb-cell{padding:3px}
-.sb-zone{display:flex;flex-direction:column;gap:2px;height:100%;min-height:0;overflow:hidden}
-.sb-slot{flex:1;min-height:0;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
-.sb-slot img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+td.sb-cell{padding:3px;overflow:hidden}
+.sb-zone{display:flex;flex-direction:column;gap:2px;height:100%;overflow:hidden}
+.sb-slot{flex:1 1 0%;min-height:0;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
+.sb-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
 .sb-slot .del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .sb-slot.has-img:hover .del,.sb-slot.has-img .del{display:flex}
