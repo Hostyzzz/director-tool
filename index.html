@@ -9,7 +9,6 @@
   --bg:#0a0a0a; --card:#121212; --border:#202020;
   --accent:#e94560; --gold:#f0a500; --green:#4ecca3;
   --text:#ddd; --muted:#777; --input:#161616;
-  --int-day:#1a2a1a; --int-night:#0f0f1a; --ext-day:#2a1a0a; --ext-night:#0a0a1a;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;font-size:13px;-webkit-tap-highlight-color:transparent}
@@ -31,57 +30,72 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .crew input{background:var(--input);border:1px solid var(--border);color:var(--text);border-radius:5px;padding:5px 8px;font-size:12px;width:140px;outline:none}
 .crew input:focus{border-color:var(--accent)}
 
-/* TABLE */
-.tw{overflow-x:auto;padding:8px;-webkit-overflow-scrolling:touch}
-table{border-collapse:collapse;min-width:100%;font-size:12px}
-thead th{background:var(--card);position:sticky;top:75px;z-index:5}
+/* Row size controls */
+.sz{padding:4px 12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sz span{font-size:10px;color:var(--muted)}
+.sz input[type=range]{width:80px;accent-color:var(--accent)}
+
+/* ===== TABLE CONTAINER ===== */
+/* This is the key: separate scroll container so sticky thead works */
+.twrap{position:relative;margin:0 8px 8px;max-height:calc(100vh - 160px);overflow:auto;border:1px solid var(--border);border-radius:4px}
+table{border-collapse:collapse;min-width:max-content;font-size:12px;width:100%}
+thead{position:sticky;top:0;z-index:10}
 th,td{border:1px solid var(--border);padding:5px 6px;text-align:left;vertical-align:top}
-th{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
-td input,td textarea,td select{width:100%;background:transparent;border:none;color:var(--text);font-size:11px;font-family:inherit;padding:2px;outline:none;resize:vertical}
+th{font-size:9px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;background:var(--card);color:var(--muted)}
+td input,td textarea,td select{width:100%;background:transparent;border:none;color:var(--text);font-size:11px;font-family:inherit;padding:2px;outline:none}
 td textarea{min-height:36px;resize:none}
-td select{appearance:none;cursor:pointer}
-td input:focus,td textarea:focus,td select:focus{background:rgba(233,69,96,0.08)}
+td select{appearance:none;cursor:pointer;color:#000;background:var(--input);border-radius:4px;padding:4px 6px}
+td select option{color:#000;background:#fff}
+td input:focus,td textarea:focus,td select:focus{outline:1px solid var(--accent);outline-offset:-1px}
 
 td.num{text-align:center;font-weight:800;font-size:11px;color:var(--accent);min-width:28px;padding:5px 2px}
 td.chk{min-width:22px;width:22px;text-align:center;padding:4px 0}
 td.chk input{width:14px;height:14px;accent-color:var(--accent)}
-td.sb{min-width:80px;max-width:110px}
-td.act{min-width:52px;max-width:52px;text-align:center;white-space:nowrap}
+td.act{min-width:52px;text-align:center;white-space:nowrap}
 td.act button{padding:2px 5px;border-radius:3px;border:1px solid var(--border);background:var(--input);color:var(--muted);cursor:pointer;font-size:9px;margin:1px}
 td.act button:active{color:var(--accent)}
 
 /* Color rows by I/E D/N */
-tr.ie-int-night td{background:rgba(10,10,30,0.4)}
-tr.ie-ext-night td{background:rgba(10,15,30,0.5)}
-tr.ie-int-day td{background:rgba(15,30,15,0.3)}
-tr.ie-ext-day td{background:rgba(30,20,10,0.3)}
-tr.selected td{background:rgba(233,69,96,0.12)!important}
-tr:hover td{background:rgba(255,255,255,0.02)!important}
-tr.selected:hover td{background:rgba(233,69,96,0.18)!important}
+tr.ie-int-night td{background:rgba(10,10,40,0.45)}
+tr.ie-int-day td{background:rgba(15,35,15,0.35)}
+tr.ie-ext-night td{background:rgba(5,10,40,0.55)}
+tr.ie-ext-day td{background:rgba(40,25,10,0.35)}
+tr.selected td{background:rgba(233,69,96,0.15)!important}
 
-/* Storyboard thumbs */
-.sb-row{display:flex;gap:3px;flex-wrap:wrap}
-.sb-slot{width:34px;height:26px;border-radius:3px;border:2px dashed var(--border);background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);transition:.15s;position:relative}
-.sb-slot img{width:100%;height:100%;object-fit:cover}
+/* Storyboard cell */
+td.sb{min-width:120px;width:160px}
+.sb-zone{display:flex;flex-direction:column;gap:4px;min-height:60px}
+.sb-slot{width:100%;min-height:80px;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;position:relative;transition:.15s}
+.sb-slot img{width:100%;height:auto;display:block}
 .sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
-.sb-slot .del{position:absolute;top:0;right:0;width:14px;height:14px;background:var(--accent);color:#fff;border:none;font-size:8px;display:none;align-items:center;justify-content:center;cursor:pointer}
-.sb-slot.has-img:hover .del{display:flex}
+.sb-slot .del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.sb-slot.has-img .del{display:flex}
+.sb-slot:hover .del{display:flex}
 
-/* Full image modal */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:200;cursor:pointer}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:200;cursor:pointer}
 .modal img{max-width:95vw;max-height:95vh;border-radius:8px}
+
+/* Project menu */
+.proj-actions{display:none;position:absolute;top:100%;left:0;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:50;min-width:160px;padding:4px}
+.proj-actions button{display:block;width:100%;padding:6px 10px;background:transparent;border:none;color:var(--text);font-size:11px;cursor:pointer;text-align:left;font-family:inherit;border-radius:4px}
+.proj-actions button:hover{background:rgba(255,255,255,0.05)}
+.proj-actions button.danger{color:var(--accent)}
+.proj-wrap{position:relative}
 
 /* Print */
 @media print{
   body{background:#fff;color:#000;font-size:9px}
-  .tb,.crew,.act,.chk,.del,.btn{display:none!important}
-  .tw{overflow:visible;padding:0}
-  table{font-size:9px;min-width:auto}
+  .tb,.crew,.sz,.act,.chk,.del,.sb-zone,.btn{display:none!important}
+  .twrap{max-height:none;overflow:visible;border:none;margin:0}
+  table{font-size:9px;width:100%}
   th,td{border-color:#000;color:#000;padding:2px 4px}
-  th{background:#eee;position:static}
-  td input,td textarea,td select{color:#000}
-  .sb-slot img{max-width:30px}
-  tr.ie-int-night td,tr.ie-ext-night td,tr.ie-int-day td,tr.ie-ext-day td{background:transparent!important}
+  th{background:#eee}
+  td input,td textarea{color:#000}
+  td select{color:#000;background:transparent;padding:0}
+  tr td{background:transparent!important}
+  td.sb{min-width:60px;width:80px}
+  .sb-slot{min-height:40px}
   @page{margin:8mm;size:A4 landscape}
 }
 </style>
@@ -91,16 +105,22 @@ tr.selected:hover td{background:rgba(233,69,96,0.18)!important}
 <!-- TOOLBAR -->
 <div class="tb">
   <h1>🎬 Сценарий</h1>
-  <select class="project" id="projSel" onchange="switchProject(this.value)"></select>
+  <div class="proj-wrap">
+    <select class="project" id="projSel" onchange="switchProject(this.value)"></select>
+    <div class="proj-actions" id="projActions">
+      <button onclick="renameProject()">✏️ Переименовать</button>
+      <button onclick="deleteProject()" class="danger">🗑 Удалить</button>
+    </div>
+  </div>
   <button class="btn a" onclick="addRow()">+ Строка</button>
   <button class="btn" onclick="addRows(3)">+3</button>
   <button class="btn" onclick="addRows(10)">+10</button>
-  <button class="btn s" onclick="newProject()" title="Новый проект">🆕</button>
+  <button class="btn s" onclick="newProject()">🆕 Проект</button>
   <button class="btn g" onclick="exportCSV()">📥 CSV</button>
   <button class="btn s" onclick="exportJSON()">💾 JSON</button>
   <label class="btn s" style="cursor:pointer">📂 Импорт <input type="file" accept=".csv,.json" style="display:none" onchange="loadFile(this)"></label>
   <button class="btn s" onclick="window.print()">🖨️</button>
-  <button class="btn danger s" onclick="delSelected()" id="delSel" style="display:none">✕ Выд.</button>
+  <button class="btn danger s" onclick="delSelected()" id="delSel" style="display:none">✕ Удалить</button>
   <span id="cnt" style="font-size:11px;color:var(--muted);margin-left:4px"></span>
 </div>
 
@@ -109,15 +129,22 @@ tr.selected:hover td{background:rgba(233,69,96,0.18)!important}
   <label>Режиссёр <input id="crDir" placeholder="Хахуза" oninput="saveMeta()"></label>
   <label>Оператор <input id="crOp" placeholder="Ярослав Савельев" oninput="saveMeta()"></label>
   <label>Продюсер <input id="crProd" placeholder="" oninput="saveMeta()"></label>
-  <label style="margin-left:8px">Грип/Свет <input id="crGrip" placeholder="" oninput="saveMeta()"></label>
+</div>
+
+<!-- SIZE CONTROLS -->
+<div class="sz">
+  <span>Высота строк:</span><input type="range" min="20" max="200" value="60" id="rowH" oninput="setRowH(this.value)">
+  <span id="rowHVal">60px</span>
+  <span style="margin-left:12px">Ширина столбцов:</span><input type="range" min="40" max="200" value="80" id="colW" oninput="setColW(this.value)">
+  <span id="colWVal">80px</span>
 </div>
 
 <!-- TABLE -->
-<div class="tw">
+<div class="twrap" id="twrap">
   <table>
-    <thead><tr>
-      <th style="width:22px"></th>
-      <th style="width:28px">#</th>
+    <thead><tr id="theadRow">
+      <th style="width:22px;min-width:22px;max-width:22px"></th>
+      <th style="width:28px;min-width:28px;max-width:28px">#</th>
       <th>SHOT</th>
       <th>I/E D/N</th>
       <th>Кадр</th>
@@ -132,21 +159,20 @@ tr.selected:hover td{background:rgba(233,69,96,0.18)!important}
       <th>Текст</th>
       <th>Тайминг</th>
       <th>Локация</th>
-      <th style="min-width:85px">🎬 Раскадровка</th>
-      <th style="width:52px"></th>
+      <th>🎬 Раскадровка</th>
+      <th></th>
     </tr></thead>
     <tbody id="tBody"></tbody>
   </table>
 </div>
 
 <script>
-// ===== DATA MODEL =====
 var FIELDS = ['shotNo','ieDn','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
 var SEL = {
   ieDn:['интерьер день','интерьер ночь','натура день','натура ночь','интерьер вечер','натура вечер'],
   angle:['прямой','низкий угол','верхний угол','рандом','с плеча','прямой на уровне глаз','субъективный'],
   equipment:['РУКИ','ШТАТИВ','Слайдер','Стабилизатор','Стедикам','Кран','Дрон','ГРИП'],
-  cameraMove:['статика','легкий наезд','легкий отъезд','панорама','рваная съемка','3 синхрона','ручная камера','x']
+  // cameraMove — обычное текстовое поле, НЕ select
 };
 
 function rowIE(row) {
@@ -165,32 +191,34 @@ var projects = {};
 var currentProj = 'default';
 var rows = [];
 var nextId = 1;
-var meta = { director:'', operator:'', producer:'', grip:'' };
+var meta = { director:'', operator:'', producer:'' };
+var rowHeight = 60;
+var colWidth = 80;
 
 // ===== STORAGE =====
 function saveAll() {
   localStorage.setItem('dir_script_projects', JSON.stringify(projects));
   localStorage.setItem('dir_script_current', currentProj);
+  localStorage.setItem('dir_script_rowH', rowHeight);
+  localStorage.setItem('dir_script_colW', colWidth);
 }
-
 function loadAll() {
   var p = localStorage.getItem('dir_script_projects');
   if (p) projects = JSON.parse(p);
   currentProj = localStorage.getItem('dir_script_current') || 'default';
-  if (!projects[currentProj]) projects[currentProj] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'', grip:'' } };
+  if (!projects[currentProj]) projects[currentProj] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' } };
+  rowHeight = parseInt(localStorage.getItem('dir_script_rowH')) || 60;
+  colWidth = parseInt(localStorage.getItem('dir_script_colW')) || 80;
 }
-
 function loadProject() {
   var p = projects[currentProj];
   rows = p.rows || [];
   nextId = p.nextId || 1;
-  meta = p.meta || { director:'', operator:'', producer:'', grip:'' };
+  meta = p.meta || { director:'', operator:'', producer:'' };
   document.getElementById('crDir').value = meta.director || '';
   document.getElementById('crOp').value = meta.operator || '';
   document.getElementById('crProd').value = meta.producer || '';
-  document.getElementById('crGrip').value = meta.grip || '';
 }
-
 function saveProject() {
   projects[currentProj] = { rows:rows, nextId:nextId, meta:meta };
   saveAll();
@@ -200,18 +228,44 @@ function switchProject(name) {
   currentProj = name;
   localStorage.setItem('dir_script_current', name);
   loadProject();
+  selectedRows = {};
   render();
   updateProjectSelector();
 }
-
 function newProject() {
   var name = prompt('Название нового проекта:');
   if (!name) return;
   if (projects[name]) { alert('Уже есть'); return; }
-  projects[name] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'', grip:'' } };
+  projects[name] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' } };
   currentProj = name;
   localStorage.setItem('dir_script_current', name);
   loadProject();
+  selectedRows = {};
+  render();
+  updateProjectSelector();
+}
+function renameProject() {
+  var old = currentProj;
+  var name = prompt('Новое название:', old);
+  if (!name || name === old) return;
+  if (projects[name]) { alert('Проект с таким названием уже есть'); return; }
+  projects[name] = projects[old];
+  delete projects[old];
+  currentProj = name;
+  localStorage.setItem('dir_script_current', name);
+  saveAll();
+  updateProjectSelector();
+}
+function deleteProject() {
+  var keys = Object.keys(projects);
+  if (keys.length <= 1) { alert('Нельзя удалить последний проект'); return; }
+  if (!confirm('Удалить проект «'+currentProj+'»? Данные будут потеряны.')) return;
+  delete projects[currentProj];
+  currentProj = keys.find(function(k){ return k !== currentProj; });
+  localStorage.setItem('dir_script_current', currentProj);
+  saveAll();
+  loadProject();
+  selectedRows = {};
   render();
   updateProjectSelector();
 }
@@ -222,19 +276,52 @@ function updateProjectSelector() {
   Object.keys(projects).forEach(function(k) {
     sel.innerHTML += '<option value="'+k+'"'+(k===currentProj?' selected':'')+'>'+k+'</option>';
   });
+  // Add "new project" option at end
+  sel.innerHTML += '<option value="__new__" style="color:var(--accent)">+ Новый проект</option>';
 }
+
+document.getElementById('projSel').addEventListener('change', function() {
+  if (this.value === '__new__') {
+    newProject();
+  } else {
+    switchProject(this.value);
+  }
+});
+
+// Project context menu
+document.getElementById('projSel').addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  var menu = document.getElementById('projActions');
+  menu.style.display = 'block';
+});
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.proj-wrap')) document.getElementById('projActions').style.display = 'none';
+});
 
 function saveMeta() {
   meta.director = document.getElementById('crDir').value;
   meta.operator = document.getElementById('crOp').value;
   meta.producer = document.getElementById('crProd').value;
-  meta.grip = document.getElementById('crGrip').value;
   saveProject();
+}
+
+// ===== SIZE =====
+function setRowH(v) {
+  rowHeight = parseInt(v);
+  document.getElementById('rowHVal').textContent = v+'px';
+  document.querySelectorAll('#tBody td textarea').forEach(function(t){ t.style.minHeight = v+'px'; });
+  saveAll();
+}
+function setColW(v) {
+  colWidth = parseInt(v);
+  document.getElementById('colWVal').textContent = v+'px';
+  var ths = document.querySelectorAll('#theadRow th');
+  for (var i=2;i<ths.length-1;i++) { ths[i].style.width=colWidth+'px'; ths[i].style.minWidth=colWidth+'px'; }
+  saveAll();
 }
 
 // ===== RENDER =====
 var selectedRows = {};
-var lastClicked = -1;
 
 function render() {
   var h = '';
@@ -242,36 +329,44 @@ function render() {
     var cls = rowIE(r);
     if (selectedRows[r.id]) cls += ' selected';
     h += '<tr class="'+cls+'" id="r-'+r.id+'">';
-    // Checkbox
     h += '<td class="chk"><input type="checkbox" onchange="toggleRow('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'></td>';
-    // Num
     h += '<td class="num">'+(i+1)+'</td>';
-    // Fields
     FIELDS.forEach(function(f) {
       var v = r[f] || '';
       if (SEL[f]) {
         var opts = '<option value="">—</option>';
-        SEL[f].forEach(function(o) { opts += '<option value="'+o+'"'+(o===v?' selected':'')+'>'+o+'</option>'; });
+        SEL[f].forEach(function(o) { opts += '<option value="'+esc(o)+'"'+(o===v?' selected':'')+'>'+esc(o)+'</option>'; });
         h += '<td><select onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+opts+'</select></td>';
       } else if (f === 'action' || f === 'notes' || f === 'opNotes' || f === 'text') {
-        h += '<td><textarea onchange="upd('+r.id+',\''+f+'\',this.value)" rows="2">'+esc(v)+'</textarea></td>';
+        h += '<td><textarea onchange="upd('+r.id+',\''+f+'\',this.value)" rows="2" style="min-height:'+rowHeight+'px">'+esc(v)+'</textarea></td>';
       } else {
         h += '<td><input value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)"></td>';
       }
     });
-    // Storyboard
-    h += '<td class="sb"><div class="sb-row">';
+    // Storyboard — one big slot + extras
+    h += '<td class="sb"><div class="sb-zone">';
     var sbs = r.storyboard || [];
-    for (var si = 0; si < 4; si++) {
-      var img = sbs[si] || '';
-      h += '<div class="sb-slot'+(img?' has-img':'')+'" onclick="if(!'+(img?'true':'false')+')addSB('+r.id+','+si+')" id="sb-'+r.id+'-'+si+'"';
-      h += ' ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event,'+r.id+','+si+')">';
+    // Filter out nulls
+    var imgs = sbs.filter(function(x){ return !!x; });
+    if (imgs.length === 0) imgs = [''];
+    // Show all images
+    imgs.forEach(function(img, si) {
+      var realIdx = sbs.indexOf(img);
+      if (realIdx < 0) realIdx = si;
+      h += '<div class="sb-slot'+(img?' has-img':'')+'" id="sb-'+r.id+'-'+si+'"';
+      h += ' ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDrop(event,'+r.id+','+si+')">';
       if (img) {
         h += '<img src="'+img+'" onclick="viewImg(event,\''+img+'\')">';
         h += '<button class="del" onclick="event.stopPropagation();delSB('+r.id+','+si+')">✕</button>';
-      } else { h += '+'; }
+      } else {
+        h += '<span onclick="addSB('+r.id+','+si+')">+</span>';
+      }
       h += '</div>';
-    }
+    });
+    // Add empty slot for new drop
+    h += '<div class="sb-slot" style="min-height:40px" id="sb-'+r.id+'-new"';
+    h += ' ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDropNew(event,'+r.id+')">';
+    h += '<span onclick="addSBNew('+r.id+')">+</span></div>';
     h += '</div></td>';
     // Actions
     h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
@@ -279,6 +374,9 @@ function render() {
   });
   document.getElementById('tBody').innerHTML = h;
   document.getElementById('cnt').textContent = rows.length + ' сцен';
+  // Apply sizes
+  setRowH(rowHeight);
+  setColW(colWidth);
   updateDelSel();
 }
 
@@ -301,23 +399,18 @@ function addRow() {
   if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
   saveProject();
 }
-
 function addRows(n) { for (var i=0;i<n;i++) addRow(); }
-
 function upd(id, key, val) {
   var r = rows.find(function(x){ return x.id===id; });
   if (r) { r[key] = val; saveProject(); }
 }
-
 function del(i) {
   if (!confirm('Удалить строку #'+(i+1)+'?')) return;
-  var id = rows[i].id;
-  delete selectedRows[id];
+  delete selectedRows[rows[i].id];
   rows.splice(i,1);
   render();
   saveProject();
 }
-
 function dup(i) {
   var r = JSON.parse(JSON.stringify(rows[i]));
   r.id = nextId++;
@@ -332,17 +425,15 @@ function toggleRow(id, e) {
   else delete selectedRows[id];
   render();
 }
-
 function delSelected() {
   var ids = Object.keys(selectedRows);
   if (ids.length === 0) return;
   if (!confirm('Удалить '+ids.length+' выбранных строк?')) return;
-  ids.forEach(function(id) { rows = rows.filter(function(r){ return r.id != id; }); });
+  rows = rows.filter(function(r){ return !selectedRows[r.id]; });
   selectedRows = {};
   render();
   saveProject();
 }
-
 function updateDelSel() {
   var btn = document.getElementById('delSel');
   var n = Object.keys(selectedRows).length;
@@ -351,24 +442,14 @@ function updateDelSel() {
 }
 
 // ===== STORYBOARD =====
-function addSB(id, slot) {
+function addSB(id, si) { pickImg(function(u){ saveSB(id, si, u); }); }
+function addSBNew(id) { pickImg(function(u){ addSBSlot(id, u); }); }
+
+function pickImg(cb) {
   var inp = document.createElement('input');
   inp.type = 'file'; inp.accept = 'image/*';
-  inp.onchange = function() {
-    var f = inp.files[0]; if (!f) return;
-    processImg(f, function(u){ saveSB(id, slot, u); });
-  };
+  inp.onchange = function() { var f = inp.files[0]; if (f) processImg(f, cb); };
   inp.click();
-}
-
-function dOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-function dLeave(e) { e.currentTarget.classList.remove('drag-over'); }
-function dDrop(e, id, slot) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  var file = e.dataTransfer.files[0];
-  if (!file || !file.type.startsWith('image/')) return;
-  processImg(file, function(u){ saveSB(id, slot, u); });
 }
 
 function processImg(file, cb) {
@@ -377,11 +458,11 @@ function processImg(file, cb) {
     r.onload = function(e) {
       var img = new Image();
       img.onload = function() {
-        var w=img.width,h=img.height,ratio=Math.min(600/w,600/h);
+        var w=img.width,h=img.height,ratio=Math.min(800/w,800/h);
         w=Math.round(w*ratio);h=Math.round(h*ratio);
         var c=document.createElement('canvas');c.width=w;c.height=h;
         c.getContext('2d').drawImage(img,0,0,w,h);
-        cb(c.toDataURL('image/jpeg',0.65));
+        cb(c.toDataURL('image/jpeg',0.7));
       };
       img.src=e.target.result;
     };
@@ -393,19 +474,33 @@ function processImg(file, cb) {
   }
 }
 
-function saveSB(id, slot, url) {
+function saveSB(id, si, url) {
   var r = rows.find(function(x){ return x.id===id; });
   if (!r) return;
   if (!r.storyboard) r.storyboard = [];
-  r.storyboard[slot] = url;
+  // Clean nulls
+  r.storyboard = r.storyboard.filter(function(x){ return !!x; });
+  if (si >= r.storyboard.length) r.storyboard.push(url);
+  else r.storyboard[si] = url;
   render();
   saveProject();
 }
 
-function delSB(id, slot) {
+function addSBSlot(id, url) {
+  var r = rows.find(function(x){ return x.id===id; });
+  if (!r) return;
+  if (!r.storyboard) r.storyboard = [];
+  r.storyboard = r.storyboard.filter(function(x){ return !!x; });
+  r.storyboard.push(url);
+  render();
+  saveProject();
+}
+
+function delSB(id, si) {
   var r = rows.find(function(x){ return x.id===id; });
   if (!r || !r.storyboard) return;
-  r.storyboard[slot] = null;
+  r.storyboard = r.storyboard.filter(function(x){ return !!x; });
+  r.storyboard.splice(si, 1);
   render();
   saveProject();
 }
@@ -419,6 +514,23 @@ function viewImg(e, url) {
   document.body.appendChild(m);
 }
 
+// Drag & drop
+function dOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dDrop(e, id, si) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  var f = e.dataTransfer.files[0];
+  if (!f || !f.type.startsWith('image/')) return;
+  processImg(f, function(u){ saveSB(id, si, u); });
+}
+function dDropNew(e, id) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  var f = e.dataTransfer.files[0];
+  if (!f || !f.type.startsWith('image/')) return;
+  processImg(f, function(u){ addSBSlot(id, u); });
+}
+
 // ===== IMPORT/EXPORT =====
 function exportCSV() {
   var hdr = ['SHOT','I/E D/N','Размер кадра','Субъект','Угол','Линза','Оборудование','Движение камеры','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
@@ -428,17 +540,14 @@ function exportCSV() {
   });
   dl('\uFEFF'+lines.join('\n'), currentProj+'.csv', 'text/csv');
 }
-
 function exportJSON() {
   dl(JSON.stringify({project:currentProj,meta:meta,rows:rows},null,2), currentProj+'.json', 'application/json');
 }
-
 function dl(content, name, type) {
   var b = new Blob([content], {type:type});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(b); a.download = name; a.click();
 }
-
 function loadFile(inp) {
   var f = inp.files[0]; if (!f) return;
   var r = new FileReader();
@@ -447,10 +556,11 @@ function loadFile(inp) {
       var d = JSON.parse(e.target.result);
       if (d.project && d.project !== currentProj) {
         if (confirm('Импортировать как новый проект "'+d.project+'"?')) {
-          projects[d.project] = { rows:d.rows||[], nextId:Math.max.apply(null,d.rows.map(function(x){return x.id}).concat([0]))+1, meta:d.meta||meta };
+          projects[d.project] = { rows:d.rows||[], nextId:Math.max.apply(null,(d.rows||[]).map(function(x){return x.id}).concat([0]))+1, meta:d.meta||meta };
           currentProj = d.project;
           localStorage.setItem('dir_script_current', d.project);
           loadProject();
+          selectedRows = {};
           render();
           updateProjectSelector();
           saveAll();
@@ -461,22 +571,19 @@ function loadFile(inp) {
       document.getElementById('crDir').value = meta.director || '';
       document.getElementById('crOp').value = meta.operator || '';
       document.getElementById('crProd').value = meta.producer || '';
-      document.getElementById('crGrip').value = meta.grip || '';
       rows = d.rows || [];
       nextId = Math.max.apply(null,rows.map(function(x){return x.id}).concat([0]))+1;
+      selectedRows = {};
       render();
       saveProject();
-    } else {
-      importCSV(e.target.result);
-    }
+    } else { importCSV(e.target.result); }
   };
   r.readAsText(f);
   inp.value = '';
 }
-
 function importCSV(content) {
   var lines = content.split('\n');
-  if (lines.length < 2) return;
+  if (lines.length<2) return;
   var map = {'SHOT':'shotNo','SHOT #':'shotNo','I/E D/N':'ieDn','Размер кадра':'frame','Субъект':'subject',
     'Угол':'angle','Линза':'lens','Оборудование':'equipment','Оборуд.':'equipment','Движение камеры':'cameraMove',
     'Камера':'cameraMove','Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
@@ -497,11 +604,11 @@ function importCSV(content) {
   if (imported.length>0) {
     if (rows.length>0 && confirm('Добавить к существующим?')) rows=rows.concat(imported);
     else rows=imported;
+    selectedRows = {};
     render();
     saveProject();
   }
 }
-
 function parseCSV(line) {
   var res=[],cur='',q=false;
   for (var i=0;i<line.length;i++) {
