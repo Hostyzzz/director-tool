@@ -70,8 +70,8 @@ tr.selected td{background:rgba(233,69,96,0.18)!important}
 
 /* SB */
 td.sb{padding:4px}
-.sb-zone{display:flex;flex-direction:column;gap:3px}
-.sb-slot{width:100%;min-height:90px;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
+.sb-zone{display:flex;flex-direction:column;gap:3px;height:100%;min-height:60px}
+.sb-slot{flex:1;min-height:60px;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
 .sb-slot img{width:100%;display:block}
 .sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
 .sb-slot .del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
@@ -84,10 +84,6 @@ td.sb{padding:4px}
 
 /* Project menu */
 .proj-wrap{position:relative}
-.proj-actions{display:none;position:absolute;top:100%;left:0;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:50;min-width:160px;padding:4px}
-.proj-actions button{display:block;width:100%;padding:6px 10px;background:transparent;border:none;color:var(--text);font-size:11px;cursor:pointer;text-align:left;font-family:inherit;border-radius:4px}
-.proj-actions button:hover{background:rgba(255,255,255,0.05)}
-.proj-actions button.danger{color:var(--accent)}
 
 /* Print */
 @media print{
@@ -113,11 +109,9 @@ td.sb{padding:4px}
   <h1>🎬 Сценарий</h1>
   <div class="proj-wrap">
     <select class="project" id="projSel"></select>
-    <div class="proj-actions" id="projActions">
-      <button onclick="renameProject()">✏️ Переименовать</button>
-      <button onclick="deleteProject()" class="danger">🗑 Удалить</button>
-    </div>
   </div>
+  <button class="btn s" onclick="renameProject()" title="Переименовать">✏️</button>
+  <button class="btn danger s" onclick="deleteProject()" title="Удалить">🗑</button>
   <button class="btn a" onclick="addRow()">+ Строка</button>
   <button class="btn" onclick="addRows(3)">+3</button>
   <button class="btn" onclick="addRows(10)">+10</button>
@@ -326,8 +320,9 @@ function render() {
     if (selectedRows[r.id]) cls += ' selected';
     var rh = rowHeights[r.id] || '';
     h += '<tr class="'+cls+'" id="r-'+r.id+'">';
-    // Checkbox
-    h += '<td class="chk"><input type="checkbox" onchange="toggleRow('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'></td>';
+    // Checkbox (with row resize handle)
+    h += '<td class="chk"><input type="checkbox" onchange="toggleRow('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'>';
+    h += '<div class="resize-b" onmousedown="rowResizeStart(event,'+r.id+')" style="position:absolute;bottom:-3px;left:0;right:0;height:6px;cursor:row-resize"></div></td>';
     // Num
     h += '<td class="num">'+(i+1)+'</td>';
     // Fields
@@ -368,8 +363,7 @@ function render() {
     h += '</div>';
     h += '<div class="resize-r" onmousedown="colResizeStart(event,\'sb\')"></div></td>';
     // Actions
-    h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button>';
-    h += '<div class="resize-b" onmousedown="rowResizeStart(event,'+r.id+')"></div></td>';
+    h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
     h += '</tr>';
   });
   document.getElementById('tBody').innerHTML = h;
