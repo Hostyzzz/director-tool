@@ -87,18 +87,19 @@ td.sb-cell{padding:3px;vertical-align:top}
 
 /* Print */
 @media print{
-  body{background:#fff;color:#000;font-size:9px}
+  body{background:#fff;color:#000;font-size:8px}
   .tb,.crew,.sz,.act,.chk,.del,.sb-zone,.btn,.resize-r,.resize-b{display:none!important}
   .twrap{max-height:none;overflow:visible;border:none;margin:0}
-  table{font-size:9px;width:100%}
-  th,td{border-color:#000;color:#000;padding:2px 4px}
-  th{background:#eee;padding:2px 4px}
-  td.data{height:auto}
-  .cell-inp,.cell-txt,.cell-sel{color:#000;font-size:9px;min-height:auto;padding:0;height:auto}
+  table{font-size:8px;width:auto;table-layout:auto}
+  th,td{border-color:#000;color:#000;padding:1px 3px}
+  th{background:#eee;padding:1px 3px;font-size:7px}
+  td.data{height:auto!important}
+  .cell-txt,.cell-sel{color:#000;font-size:8px;min-height:auto!important;padding:1px 2px;height:auto!important}
   tr td{background:transparent!important}
-  td.sb-cell{min-width:60px;width:80px;padding:2px}
-  .sb-slot{min-height:30px;font-size:14px}
-  @page{margin:8mm;size:A4 landscape}
+  td.sb-cell{min-width:50px;width:60px;padding:1px}
+  .sb-wrap{max-height:none!important}
+  .sb-slot{min-height:25px;font-size:12px;border-width:1px}
+  @page{margin:5mm;size:A4 landscape}
 }
 </style>
 </head>
@@ -374,6 +375,27 @@ function parseCSV(line){var res=[],cur='',q=false;for(var i=0;i<line.length;i++)
 
 // ===== INIT =====
 loadAll();loadProject();render();updateProjectSelector();
+
+// Auto-scale table on print to fit page
+window.addEventListener('beforeprint',function(){
+  var tw=document.getElementById('twrap');
+  var table=tw.querySelector('table');
+  if(!table)return;
+  var twW=table.offsetWidth;
+  // A4 landscape printable width ≈ 277mm ≈ 1047px at 96dpi (minus margins)
+  var pageW=tw.offsetWidth-16; // twrap width minus scrollbar
+  if(pageW<800)pageW=1000; // fallback
+  if(twW>pageW){
+    var scale=(pageW/twW).toFixed(3);
+    table.style.transform='scale('+scale+')';
+    table.style.transformOrigin='top left';
+    table.style.width=(100/scale)+'%';
+  }
+});
+window.addEventListener('afterprint',function(){
+  var table=document.querySelector('#twrap table');
+  if(table){table.style.transform='';table.style.transformOrigin='';table.style.width='';}
+});
 </script>
 </body>
 </html>
