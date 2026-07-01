@@ -318,38 +318,57 @@ function loadFile(inp){
 
 function importCSV(content){
   var lines=content.split('\n');if(lines.length<2)return;
-  // Maps CSV headers to our field keys
-  var map={'SHOT':'shotNo','SHOT #':'shotNo',
-    'Инт/Нат':'interior','I/E D/N':'interior',
-    'Время суток':'timeOfDay','Время':'timeOfDay',
-    'Размер кадра':'frame','Кадр':'frame','Субъект':'subject','Угол':'angle','Линза':'lens',
-    'Оборудование':'equipment','Оборуд.':'equipment',
-    'Движение камеры':'cameraMove','Камера':'cameraMove',
-    'Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
-    'Тайминг':'timing','тайминг трека':'timing','Локация':'location','локация':'location'};
-  var hdr=lines[0].split(',').map(function(x){return x.replace(/"/g,'').trim();});
-  var imported=[];
+  // Comprehensive CSV header → field key mapping
+  var map={
+    'X':'','shot':'shotNo','shot #':'shotNo','shot#':'shotNo',
+    'i/e d/n':'interior','инт/нат':'interior','i/e':'interior',
+    'время суток':'timeOfDay','время':'timeOfDay',
+    'размер кадра':'frame','кадр':'frame',
+    'субъект':'subject','угол':'angle','линза':'lens',
+    'оборудование':'equipment','оборуд.':'equipment','оборуд':'equipment',
+    'движение камеры':'cameraMove','камера':'cameraMove',
+    'действие':'action','заметки':'notes','заметки опер':'opNotes',
+    'текст':'text','тайминг':'timing','тайминг трека':'timing',
+    'локация':'location','storyboard':''
+  };
+  // Normalize headers
+  var hdr=lines[0].split(',').map(function(x){return x.replace(/"/g,'').trim().toLowerCase();});
+  var imported=[], skipped=0;
   for(var i=1;i<lines.length;i++){
     var cols=parseCSV(lines[i]);
-    if(cols.length===0||(cols.length===1&&!cols[0]))continue;
+    if(cols.length===0||(cols.length===1&&!cols[0])){skipped++;continue;}
     var r={id:nextId++,storyboard:[]};FIELDS.forEach(function(f){r[f]='';});
+    var filled=false;
     for(var j=0;j<Math.min(cols.length,hdr.length);j++){
       var k=map[hdr[j]];
-      if(k){
-        // Split old combined I/E D/N into interior + timeOfDay
-        if(k==='interior'&&cols[j]&&cols[j].includes(' ')){
-          var parts=cols[j].split(' ');r.interior=parts[0];if(parts.length>=2)r.timeOfDay=parts.slice(1).join(' ');
-        }else{r[k]=cols[j]||'';}
-      }
+      if(!k)continue; // skip unmapped columns (X, Storyboard, etc)
+      var val=(cols[j]||'').trim();
+      if(!val)continue;
+      // Split old combined I/E D/N into interior + timeOfDay
+      if(k==='interior'&&val.includes(' ')){
+        var parts=val.split(/\s+/);
+        // First word is interior/exterior
+        var first=parts[0].toLowerCase();
+        if(first==='интерьер'||first==='натура'||first==='int'||first==='ext'||first==='инт'){
+          r.interior=(first==='int'||first==='инт')?'интерьер':(first==='ext'?'натура':first);
+          var rest=parts.slice(1).join(' ').toLowerCase();
+          if(rest==='ночь'||rest==='night'||rest==='ноч')r.timeOfDay='ночь';
+          else if(rest==='день'||rest==='day'||rest==='ден')r.timeOfDay='день';
+          else if(rest==='вечер'||rest==='evening'||rest==='веч')r.timeOfDay='вечер';
+          else if(rest==='утро'||rest==='morning'||rest==='утр')r.timeOfDay='утро';
+          else r.timeOfDay=rest;
+        }else{r[k]=val;}
+      }else{r[k]=val;}
+      filled=true;
     }
-    imported.push(r);
+    if(filled)imported.push(r); else skipped++;
   }
   if(imported.length>0){
-    if(rows.length>0&&confirm(imported.length+' сцен импортировано. Добавить к существующим (ОК) или заменить (Отмена)?')){
-      rows=rows.concat(imported);
-    }else{rows=imported;}
+    var msg=imported.length+' сцен загружено'+(skipped>0?', '+skipped+' пустых пропущено':'')+'. Добавить к существующим?';
+    if(rows.length>0&&confirm(msg)){rows=rows.concat(imported);}
+    else{rows=imported;}
     selectedRows={};render();saveProject();
-  }
+  }else{alert('Не найдено данных для импорта. Проверь CSV.');}
 }
 function parseCSV(line){var res=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(q){if(ch==='"'){if(line[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=ch;}else{if(ch==='"')q=true;else if(ch===','){res.push(cur.trim());cur='';}else cur+=ch;}}res.push(cur.trim());return res;}
 
