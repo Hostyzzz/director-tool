@@ -45,7 +45,8 @@ td{padding:0}
 
 /* Resize handles */
 .resize-r{position:absolute;right:-3px;top:0;bottom:0;width:6px;cursor:col-resize;z-index:5}
-.resize-b{position:absolute;bottom:-3px;left:0;right:0;height:6px;cursor:row-resize;z-index:6}
+.resize-b{position:absolute;bottom:-3px;left:0;right:0;height:8px;cursor:row-resize;z-index:6}
+.resize-b:hover{background:rgba(233,69,96,0.3)}
 
 /* Cell inputs - fill entire cell */
 td.data{height:36px}
@@ -215,17 +216,21 @@ function render(){
     // checkbox + row resize
     h+='<td class="chk" style="'+rhpx+'"><input type="checkbox" onchange="sel('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'>';
     h+='<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div></td>';
-    // num
-    h+='<td class="num" style="'+rhpx+'">'+(i+1)+'</td>';
-    // data cells
+    // num (also has resize handle)
+    h+='<td class="num" style="'+rhpx+'">'+(i+1)+'<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div></td>';
+    // data cells - add resize-b to first cell too
+    var firstCell = true;
     FIELDS.forEach(function(f){
       var v=r[f]||'',cs=colSizes[f]?'width:'+colSizes[f]+'px;':'';
       if(SEL[f]){
         var o='<option value="">—</option>'; SEL[f].forEach(function(x){o+='<option value="'+x+'"'+(x===v?' selected':'')+'>'+x+'</option>';});
-        h+='<td class="data" style="'+rhpx+cs+'"><select class="cell-sel" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+o+'</select><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
+        var rb = firstCell ? '<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div>' : '';
+        h+='<td class="data" style="'+rhpx+cs+'"><select class="cell-sel" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+o+'</select>'+rb+'<div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }else{
-        h+='<td class="data" style="'+rhpx+cs+'"><textarea class="cell-txt" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+rh+'px">'+esc(v)+'</textarea><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
+        var rb = firstCell ? '<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div>' : '';
+        h+='<td class="data" style="'+rhpx+cs+'"><textarea class="cell-txt" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+rh+'px">'+esc(v)+'</textarea>'+rb+'<div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }
+      firstCell = false;
     });
     // SB
     var sbW=colSizes.sb?'width:'+colSizes.sb+'px;':'';
