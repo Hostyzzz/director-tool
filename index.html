@@ -71,9 +71,9 @@ tr.selected td{background:rgba(233,69,96,0.18)!important}
 
 /* SB */
 td.sb-cell{padding:3px}
-.sb-zone{display:flex;flex-direction:column;gap:2px;height:100%;min-height:60px}
-.sb-slot{flex:1;min-height:50px;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
-.sb-slot img{width:100%;height:100%;object-fit:cover;display:block}
+.sb-zone{display:flex;flex-direction:column;gap:2px;height:100%;min-height:0;overflow:hidden}
+.sb-slot{flex:1;min-height:0;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
+.sb-slot img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
 .sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
 .sb-slot .del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .sb-slot.has-img:hover .del,.sb-slot.has-img .del{display:flex}
@@ -128,7 +128,7 @@ td.sb-cell{padding:3px}
 <div class="sz">
   <span>Шрифт:</span><input type="range" min="8" max="18" value="11" id="fontSz" oninput="setFont(this.value)">
   <span id="fontVal">11px</span>
-  <span style="margin-left:12px">Высота строк по умолчанию:</span><input type="range" min="24" max="200" value="36" id="defRowH" oninput="setDefRowH(this.value)">
+  <span style="margin-left:12px">Высота строк по умолчанию:</span><input type="range" min="24" max="400" value="36" id="defRowH" oninput="setDefRowH(this.value)">
   <span id="defRowHVal">36px</span>
 </div>
 
