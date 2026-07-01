@@ -49,11 +49,11 @@ td{padding:0}
 
 /* Cell inputs - fill entire cell */
 td.data{height:36px}
-.cell-inp,.cell-txt,.cell-sel{width:100%;height:100%;padding:3px 5px;background:transparent;border:none;color:var(--text);font-size:var(--fs,11px);font-family:inherit;outline:none;display:block;line-height:1.3;margin:0}
-.cell-txt{resize:none;min-height:36px}
+.cell-txt,.cell-sel{width:100%;height:100%;padding:3px 5px;background:transparent;border:none;color:var(--text);font-size:var(--fs,11px);font-family:inherit;outline:none;display:block;line-height:1.3;margin:0}
+.cell-txt{resize:none;min-height:36px;overflow-wrap:break-word;white-space:pre-wrap}
 .cell-sel{appearance:none;cursor:pointer;color:var(--text);background:var(--input);border-radius:0;min-height:28px}
 .cell-sel option{color:#000;background:#fff}
-.cell-inp:focus,.cell-txt:focus,.cell-sel:focus{outline:1px solid var(--accent);outline-offset:-1px;z-index:2;position:relative}
+.cell-txt:focus,.cell-sel:focus{outline:1px solid var(--accent);outline-offset:-1px;z-index:2;position:relative}
 
 td.num{text-align:center;font-weight:800;font-size:var(--fs,11px);color:var(--accent);width:28px;padding:3px 2px}
 td.chk{width:22px;text-align:center;vertical-align:middle}
@@ -151,7 +151,7 @@ var SEL = {
   timeOfDay:['утро','день','вечер','ночь'],
   equipment:['РУКИ','ШТАТИВ','Слайдер','Стабилизатор','Стедикам','Кран','Дрон','ГРИП']
 };
-var TXT = {action:1,notes:1,opNotes:1,text:1};
+var TXT = {shotNo:1,interior:0,timeOfDay:0,frame:1,subject:1,angle:1,lens:1,equipment:0,cameraMove:1,action:1,notes:1,opNotes:1,text:1,timing:1,location:1};
 var COL_IDX = {chk:0,num:1,shotNo:2,interior:3,timeOfDay:4,frame:5,subject:6,angle:7,lens:8,equipment:9,cameraMove:10,action:11,notes:12,opNotes:13,text:14,timing:15,location:16,sb:17,act:18};
 
 function rowIE(r) {
@@ -222,10 +222,8 @@ function render(){
       if(SEL[f]){
         var o='<option value="">—</option>'; SEL[f].forEach(function(x){o+='<option value="'+x+'"'+(x===v?' selected':'')+'>'+x+'</option>';});
         h+='<td class="data" style="'+rhpx+cs+'"><select class="cell-sel" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+o+'</select><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
-      }else if(TXT[f]){
-        h+='<td class="data" style="'+rhpx+cs+'"><textarea class="cell-txt" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+rh+'px">'+esc(v)+'</textarea><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }else{
-        h+='<td class="data" style="'+rhpx+cs+'"><input class="cell-inp" value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)"><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
+        h+='<td class="data" style="'+rhpx+cs+'"><textarea class="cell-txt" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+rh+'px">'+esc(v)+'</textarea><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }
     });
     // SB
