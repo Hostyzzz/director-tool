@@ -216,21 +216,18 @@ function render(){
     // checkbox + row resize
     h+='<td class="chk" style="'+rhpx+'"><input type="checkbox" onchange="sel('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'>';
     h+='<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div></td>';
-    // num (also has resize handle)
+    // num
     h+='<td class="num" style="'+rhpx+'">'+(i+1)+'<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div></td>';
-    // data cells - add resize-b to first cell too
-    var firstCell = true;
+    // data cells
     FIELDS.forEach(function(f){
       var v=r[f]||'',cs=colSizes[f]?'width:'+colSizes[f]+'px;':'';
+      var rb = '<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div>';
       if(SEL[f]){
         var o='<option value="">—</option>'; SEL[f].forEach(function(x){o+='<option value="'+x+'"'+(x===v?' selected':'')+'>'+x+'</option>';});
-        var rb = firstCell ? '<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div>' : '';
         h+='<td class="data" style="'+rhpx+cs+'"><select class="cell-sel" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+o+'</select>'+rb+'<div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }else{
-        var rb = firstCell ? '<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div>' : '';
         h+='<td class="data" style="'+rhpx+cs+'"><textarea class="cell-txt" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+rh+'px">'+esc(v)+'</textarea>'+rb+'<div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }
-      firstCell = false;
     });
     // SB
     var sbW=colSizes.sb?'width:'+colSizes.sb+'px;':'';
@@ -244,9 +241,9 @@ function render(){
       h+='</div>';
     });
     h+='<div class="sb-slot sb-new" ondragover="dOver(event)" ondragleave="this.classList.remove(\'drag-over\')" ondrop="dDropNew(event,'+r.id+')"><span onclick="addSBNew('+r.id+')">+</span></div>';
-    h+='</div></div><div class="resize-r" onmousedown="colRS(event,\'sb\')"></div></td>';
+    h+='</div></div><div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div><div class="resize-r" onmousedown="colRS(event,\'sb\')"></div></td>';
     // actions
-    h+='<td class="act" style="'+rhpx+'"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
+    h+='<td class="act" style="'+rhpx+'"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button><div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div></td>';
     h+='</tr>';
   });
   document.getElementById('tBody').innerHTML=h;
