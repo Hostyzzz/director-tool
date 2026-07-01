@@ -39,25 +39,26 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .twrap{position:relative;margin:0 8px 8px;max-height:calc(100vh - 170px);overflow:auto;border:1px solid var(--border);border-radius:4px}
 table{border-collapse:collapse;min-width:max-content;font-size:var(--fs,11px);width:100%}
 thead{position:sticky;top:0;z-index:10}
-th,td{border:1px solid var(--border);padding:0;text-align:left;vertical-align:top;position:relative}
+th,td{border:1px solid var(--border);text-align:left;vertical-align:top;position:relative}
 th{font-size:9px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;background:var(--card);color:var(--muted);padding:4px 6px;overflow:hidden}
-td{padding:0;}
+td{padding:0}
 
 /* Resize handles */
 .resize-r{position:absolute;right:-3px;top:0;bottom:0;width:6px;cursor:col-resize;z-index:5}
-.resize-b{position:absolute;bottom:-3px;left:0;right:0;height:6px;cursor:row-resize;z-index:5}
+.resize-b{position:absolute;bottom:-3px;left:0;right:0;height:6px;cursor:row-resize;z-index:6}
 
-/* Cell inputs */
-.cell-inner{width:100%;height:100%;min-height:40px;padding:4px 6px;background:transparent;border:none;color:var(--text);font-size:var(--fs,11px);font-family:inherit;outline:none;display:block;line-height:1.4}
-textarea.cell-inner{resize:none;min-height:40px}
-select.cell-inner{appearance:none;cursor:pointer;color:#000;background:var(--input);border-radius:0;min-height:30px}
-select.cell-inner option{color:#000;background:#fff}
-.cell-inner:focus{outline:1px solid var(--accent);outline-offset:-1px;z-index:2;position:relative}
+/* Cell inputs - fill entire cell */
+td.data{height:36px}
+.cell-inp,.cell-txt,.cell-sel{width:100%;height:100%;padding:3px 5px;background:transparent;border:none;color:var(--text);font-size:var(--fs,11px);font-family:inherit;outline:none;display:block;line-height:1.3;margin:0}
+.cell-txt{resize:none;min-height:36px}
+.cell-sel{appearance:none;cursor:pointer;color:var(--text);background:var(--input);border-radius:0;min-height:28px}
+.cell-sel option{color:#000;background:#fff}
+.cell-inp:focus,.cell-txt:focus,.cell-sel:focus{outline:1px solid var(--accent);outline-offset:-1px;z-index:2;position:relative}
 
-td.num{text-align:center;font-weight:800;font-size:var(--fs,11px);color:var(--accent);min-width:28px;width:28px;padding:4px 2px}
-td.chk{min-width:22px;width:22px;text-align:center;vertical-align:middle;padding:0}
-td.chk input{width:14px;height:14px;accent-color:var(--accent)}
-td.act{min-width:52px;text-align:center;vertical-align:middle;padding:2px}
+td.num{text-align:center;font-weight:800;font-size:var(--fs,11px);color:var(--accent);width:28px;padding:3px 2px}
+td.chk{width:22px;text-align:center;vertical-align:middle}
+td.chk>input[type=checkbox]{width:14px;height:14px;accent-color:var(--accent);margin:0}
+td.act{width:52px;text-align:center;vertical-align:middle;padding:2px}
 td.act button{padding:2px 5px;border-radius:3px;border:1px solid var(--border);background:var(--input);color:var(--muted);cursor:pointer;font-size:9px;margin:1px}
 td.act button:active{color:var(--accent)}
 
@@ -69,21 +70,18 @@ tr.ie-ext-day td{background:rgba(40,25,10,0.35)}
 tr.selected td{background:rgba(233,69,96,0.18)!important}
 
 /* SB */
-td.sb{padding:4px}
-.sb-zone{display:flex;flex-direction:column;gap:3px;height:100%;min-height:60px}
-.sb-slot{flex:1;min-height:60px;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
-.sb-slot img{width:100%;display:block}
+td.sb-cell{padding:3px}
+.sb-zone{display:flex;flex-direction:column;gap:2px;height:100%;min-height:60px}
+.sb-slot{flex:1;min-height:50px;width:100%;border:2px dashed var(--border);border-radius:6px;background:var(--input);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;position:relative;transition:.15s}
+.sb-slot img{width:100%;height:100%;object-fit:cover;display:block}
 .sb-slot.drag-over{border-color:var(--accent);background:rgba(233,69,96,0.1)}
 .sb-slot .del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .sb-slot.has-img:hover .del,.sb-slot.has-img .del{display:flex}
-.sb-slot.sb-new{min-height:36px;border-style:dotted}
+.sb-slot.sb-new{min-height:30px;border-style:dotted;flex:0 0 auto}
 
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:200;cursor:pointer}
 .modal img{max-width:95vw;max-height:95vh;border-radius:8px}
-
-/* Project menu */
-.proj-wrap{position:relative}
 
 /* Print */
 @media print{
@@ -93,12 +91,11 @@ td.sb{padding:4px}
   table{font-size:9px;width:100%}
   th,td{border-color:#000;color:#000;padding:2px 4px}
   th{background:#eee;padding:2px 4px}
-  td{padding:2px 4px}
-  .cell-inner{color:#000;font-size:9px;min-height:auto;padding:0}
-  select.cell-inner{color:#000;background:transparent;padding:0}
+  td.data{height:auto}
+  .cell-inp,.cell-txt,.cell-sel{color:#000;font-size:9px;min-height:auto;padding:0;height:auto}
   tr td{background:transparent!important}
-  td.sb{min-width:60px;width:80px}
-  .sb-slot{min-height:40px;font-size:16px}
+  td.sb-cell{min-width:60px;width:80px;padding:2px}
+  .sb-slot{min-height:30px;font-size:14px}
   @page{margin:8mm;size:A4 landscape}
 }
 </style>
@@ -107,9 +104,7 @@ td.sb{padding:4px}
 
 <div class="tb">
   <h1>🎬 Сценарий</h1>
-  <div class="proj-wrap">
-    <select class="project" id="projSel"></select>
-  </div>
+  <select class="project" id="projSel"></select>
   <button class="btn s" onclick="renameProject()" title="Переименовать">✏️</button>
   <button class="btn danger s" onclick="deleteProject()" title="Удалить">🗑</button>
   <button class="btn a" onclick="addRow()">+ Строка</button>
@@ -133,6 +128,8 @@ td.sb{padding:4px}
 <div class="sz">
   <span>Шрифт:</span><input type="range" min="8" max="18" value="11" id="fontSz" oninput="setFont(this.value)">
   <span id="fontVal">11px</span>
+  <span style="margin-left:12px">Высота строк по умолчанию:</span><input type="range" min="24" max="200" value="36" id="defRowH" oninput="setDefRowH(this.value)">
+  <span id="defRowHVal">36px</span>
 </div>
 
 <div class="twrap" id="twrap">
@@ -140,570 +137,223 @@ td.sb{padding:4px}
     <thead><tr id="theadRow">
       <th style="width:22px;min-width:22px"></th>
       <th style="width:28px;min-width:28px">#</th>
-      <th>SHOT</th>
-      <th>Инт/Нат</th>
-      <th>Время</th>
-      <th>Кадр</th>
-      <th>Субъект</th>
-      <th>Угол</th>
-      <th>Линза</th>
-      <th>Оборуд.</th>
-      <th>Камера</th>
-      <th>Действие</th>
-      <th>Заметки</th>
-      <th>Заметки ОПЕР</th>
-      <th>Текст</th>
-      <th>Тайминг</th>
-      <th>Локация</th>
-      <th>🎬 Раскадровка</th>
-      <th></th>
+      <th>SHOT</th><th>Инт/Нат</th><th>Время</th><th>Кадр</th><th>Субъект</th><th>Угол</th><th>Линза</th><th>Оборуд.</th><th>Камера</th>
+      <th>Действие</th><th>Заметки</th><th>Заметки ОПЕР</th><th>Текст</th><th>Тайминг</th><th>Локация</th><th>🎬 Раскадровка</th><th></th>
     </tr></thead>
     <tbody id="tBody"></tbody>
   </table>
 </div>
 
 <script>
-// ===== DATA MODEL =====
-// Fields: shotNo, interior, timeOfDay, frame, subject, angle, lens, equipment, cameraMove
-//          action, notes, opNotes, text, timing, location
 var FIELDS = ['shotNo','interior','timeOfDay','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
 var SEL = {
   interior:['интерьер','натура'],
   timeOfDay:['утро','день','вечер','ночь'],
   equipment:['РУКИ','ШТАТИВ','Слайдер','Стабилизатор','Стедикам','Кран','Дрон','ГРИП']
 };
-var TEXTAREA_FIELDS = { action:1, notes:1, opNotes:1, text:1 };
+var TXT = {action:1,notes:1,opNotes:1,text:1};
+var COL_IDX = {chk:0,num:1,shotNo:2,interior:3,timeOfDay:4,frame:5,subject:6,angle:7,lens:8,equipment:9,cameraMove:10,action:11,notes:12,opNotes:13,text:14,timing:15,location:16,sb:17,act:18};
 
-function rowIE(row) {
-  var i = (row.interior||'').toLowerCase();
-  var t = (row.timeOfDay||'').toLowerCase();
-  if (i.includes('интерьер') && (t.includes('ноч')||t.includes('веч'))) return 'ie-int-night';
-  if (i.includes('интерьер') && t.includes('ден')) return 'ie-int-day';
-  if (i.includes('натура') && (t.includes('ноч')||t.includes('веч'))) return 'ie-ext-night';
-  if (i.includes('натура') && t.includes('ден')) return 'ie-ext-day';
-  if (i.includes('интерьер')) return 'ie-int-day';
-  if (i.includes('натура')) return 'ie-ext-day';
-  if (t.includes('ноч')||t.includes('веч')) return 'ie-int-night';
-  if (t.includes('утр')||t.includes('ден')) return 'ie-int-day';
-  return '';
+function rowIE(r) {
+  var i=(r.interior||'').toLowerCase(), t=(r.timeOfDay||'').toLowerCase();
+  if(i.includes('интерьер')&&(t.includes('ноч')||t.includes('веч')))return'ie-int-night';
+  if(i.includes('интерьер')&&t.includes('ден'))return'ie-int-day';
+  if(i.includes('натура')&&(t.includes('ноч')||t.includes('веч')))return'ie-ext-night';
+  if(i.includes('натура')&&t.includes('ден'))return'ie-ext-day';
+  if(i.includes('интерьер'))return'ie-int-day';
+  if(i.includes('натура'))return'ie-ext-day';
+  if(t.includes('ноч')||t.includes('веч'))return'ie-int-night';
+  return'';
 }
 
-// Projects
-var projects = {};
-var currentProj = 'default';
-var rows = [];
-var nextId = 1;
-var meta = { director:'', operator:'', producer:'' };
-var selectedRows = {};
-var fontSize = 11;
-
-// Column widths (stored per-column, keyed by field name + special keys like 'num','chk','sb','act')
-var colSizes = {};
-var rowHeights = {}; // per row id
+var projects={}, currentProj='default', rows=[], nextId=1, meta={director:'',operator:'',producer:''}, selectedRows={}, fontSize=11, defRowH=36, colSizes={}, rowHeights={};
 
 // ===== STORAGE =====
-function saveAll() {
-  localStorage.setItem('dir_script_projects', JSON.stringify(projects));
-  localStorage.setItem('dir_script_current', currentProj);
-  localStorage.setItem('dir_script_fontSize', fontSize);
+function saveAll(){ localStorage.setItem('ds_proj',JSON.stringify(projects)); localStorage.setItem('ds_cur',currentProj); localStorage.setItem('ds_fs',fontSize); localStorage.setItem('ds_rh',defRowH); }
+function loadAll(){
+  var p=localStorage.getItem('ds_proj'); if(p)projects=JSON.parse(p);
+  currentProj=localStorage.getItem('ds_cur')||'default';
+  fontSize=parseInt(localStorage.getItem('ds_fs'))||11;
+  defRowH=parseInt(localStorage.getItem('ds_rh'))||36;
+  if(!projects[currentProj])projects[currentProj]={rows:[],nextId:1,meta:{director:'',operator:'',producer:''}};
 }
-function loadAll() {
-  var p = localStorage.getItem('dir_script_projects');
-  if (p) projects = JSON.parse(p);
-  currentProj = localStorage.getItem('dir_script_current') || 'default';
-  if (!projects[currentProj]) projects[currentProj] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' } };
-  fontSize = parseInt(localStorage.getItem('dir_script_fontSize')) || 11;
+function loadProject(){
+  var p=projects[currentProj]; rows=p.rows||[]; nextId=p.nextId||1;
+  meta=p.meta||{director:'',operator:'',producer:''};
+  colSizes=p.colSizes||{}; rowHeights=p.rowHeights||{};
+  document.getElementById('crDir').value=meta.director||'';
+  document.getElementById('crOp').value=meta.operator||'';
+  document.getElementById('crProd').value=meta.producer||'';
+  document.getElementById('fontSz').value=fontSize;
+  document.getElementById('fontVal').textContent=fontSize+'px';
+  document.getElementById('defRowH').value=defRowH;
+  document.getElementById('defRowHVal').textContent=defRowH+'px';
+  document.documentElement.style.setProperty('--fs',fontSize+'px');
 }
-function loadProject() {
-  var p = projects[currentProj];
-  rows = p.rows || [];
-  nextId = p.nextId || 1;
-  meta = p.meta || { director:'', operator:'', producer:'' };
-  colSizes = p.colSizes || {};
-  rowHeights = p.rowHeights || {};
-  document.getElementById('crDir').value = meta.director || '';
-  document.getElementById('crOp').value = meta.operator || '';
-  document.getElementById('crProd').value = meta.producer || '';
-  document.getElementById('fontSz').value = fontSize;
-  document.getElementById('fontVal').textContent = fontSize+'px';
-  document.documentElement.style.setProperty('--fs', fontSize+'px');
-}
-function saveProject() {
-  projects[currentProj] = { rows:rows, nextId:nextId, meta:meta, colSizes:colSizes, rowHeights:rowHeights };
-  saveAll();
-}
+function saveProject(){ projects[currentProj]={rows:rows,nextId:nextId,meta:meta,colSizes:colSizes,rowHeights:rowHeights}; saveAll(); }
 
-function switchProject(name) {
-  if (name === '__new__') { newProject(); return; }
-  currentProj = name;
-  localStorage.setItem('dir_script_current', name);
-  loadProject();
-  selectedRows = {};
-  render();
-  updateProjectSelector();
-}
-function newProject() {
-  var name = prompt('Название нового проекта:');
-  if (!name) return;
-  if (projects[name]) { alert('Уже есть'); return; }
-  projects[name] = { rows:[], nextId:1, meta:{ director:'', operator:'', producer:'' }, colSizes:{}, rowHeights:{} };
-  currentProj = name;
-  localStorage.setItem('dir_script_current', name);
-  loadProject();
-  selectedRows = {};
-  render();
-  updateProjectSelector();
-}
-function renameProject() {
-  var old = currentProj;
-  var name = prompt('Новое название:', old);
-  if (!name || name===old) return;
-  if (projects[name]) { alert('Уже есть'); return; }
-  projects[name] = projects[old];
-  delete projects[old];
-  currentProj = name;
-  localStorage.setItem('dir_script_current', name);
-  saveAll();
-  updateProjectSelector();
-}
-function deleteProject() {
-  var keys = Object.keys(projects);
-  if (keys.length<=1) { alert('Нельзя удалить последний проект'); return; }
-  if (!confirm('Удалить «'+currentProj+'»?')) return;
-  delete projects[currentProj];
-  currentProj = keys.find(function(k){ return k!==currentProj; });
-  localStorage.setItem('dir_script_current', currentProj);
-  saveAll();
-  loadProject();
-  selectedRows = {};
-  render();
-  updateProjectSelector();
-}
-function updateProjectSelector() {
-  var sel = document.getElementById('projSel');
-  sel.innerHTML = '';
-  Object.keys(projects).forEach(function(k) {
-    sel.innerHTML += '<option value="'+k+'"'+(k===currentProj?' selected':'')+'>'+k+'</option>';
-  });
-  sel.innerHTML += '<option value="__new__" style="color:var(--accent)">+ Новый проект</option>';
-}
-document.getElementById('projSel').addEventListener('change', function() {
-  switchProject(this.value);
-});
-document.getElementById('projSel').addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-  document.getElementById('projActions').style.display = 'block';
-});
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.proj-wrap')) document.getElementById('projActions').style.display = 'none';
-});
+function switchProject(name){ if(name==='__new__'){newProject();return;} currentProj=name; localStorage.setItem('ds_cur',name); loadProject(); selectedRows={}; render(); updateProjectSelector(); }
+function newProject(){ var n=prompt('Название:'); if(!n)return; if(projects[n]){alert('Уже есть');return;} projects[n]={rows:[],nextId:1,meta:{director:'',operator:'',producer:''},colSizes:{},rowHeights:{}}; currentProj=n; localStorage.setItem('ds_cur',n); loadProject(); selectedRows={}; render(); updateProjectSelector(); }
+function renameProject(){ var o=currentProj,n=prompt('Новое название:',o); if(!n||n===o)return; if(projects[n]){alert('Уже есть');return;} projects[n]=projects[o]; delete projects[o]; currentProj=n; localStorage.setItem('ds_cur',n); saveAll(); updateProjectSelector(); }
+function deleteProject(){ var k=Object.keys(projects); if(k.length<=1){alert('Нельзя удалить последний');return;} if(!confirm('Удалить «'+currentProj+'»?'))return; delete projects[currentProj]; currentProj=k.find(function(x){return x!==currentProj;}); localStorage.setItem('ds_cur',currentProj); saveAll(); loadProject(); selectedRows={}; render(); updateProjectSelector(); }
+function updateProjectSelector(){ var s=document.getElementById('projSel'); s.innerHTML=''; Object.keys(projects).forEach(function(k){s.innerHTML+='<option value="'+k+'"'+(k===currentProj?' selected':'')+'>'+k+'</option>';}); s.innerHTML+='<option value="__new__" style="color:var(--accent)">+ Новый проект</option>'; }
+document.getElementById('projSel').addEventListener('change',function(){switchProject(this.value);});
 
-function saveMeta() {
-  meta.director = document.getElementById('crDir').value;
-  meta.operator = document.getElementById('crOp').value;
-  meta.producer = document.getElementById('crProd').value;
-  saveProject();
-}
-
-function setFont(v) {
-  fontSize = parseInt(v);
-  document.getElementById('fontVal').textContent = v+'px';
-  document.documentElement.style.setProperty('--fs', v+'px');
-  saveAll();
-}
+function saveMeta(){ meta.director=document.getElementById('crDir').value; meta.operator=document.getElementById('crOp').value; meta.producer=document.getElementById('crProd').value; saveProject(); }
+function setFont(v){ fontSize=parseInt(v); document.getElementById('fontVal').textContent=v+'px'; document.documentElement.style.setProperty('--fs',v+'px'); saveAll(); }
+function setDefRowH(v){ defRowH=parseInt(v); document.getElementById('defRowHVal').textContent=v+'px'; render(); saveAll(); }
 
 // ===== RENDER =====
-function render() {
-  var h = '';
-  rows.forEach(function(r, i) {
-    var cls = rowIE(r);
-    if (selectedRows[r.id]) cls += ' selected';
-    var rh = rowHeights[r.id] || '';
-    h += '<tr class="'+cls+'" id="r-'+r.id+'">';
-    // Checkbox (with row resize handle)
-    h += '<td class="chk"><input type="checkbox" onchange="toggleRow('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'>';
-    h += '<div class="resize-b" onmousedown="rowResizeStart(event,'+r.id+')" style="position:absolute;bottom:-3px;left:0;right:0;height:6px;cursor:row-resize"></div></td>';
-    // Num
-    h += '<td class="num">'+(i+1)+'</td>';
-    // Fields
-    FIELDS.forEach(function(f) {
-      var v = r[f] || '';
-      var style = '';
-      if (rh) style = ' style="height:'+rh+'px"';
-      if (SEL[f]) {
-        var opts = '<option value="">—</option>';
-        SEL[f].forEach(function(o) { opts += '<option value="'+esc(o)+'"'+(o===v?' selected':'')+'>'+esc(o)+'</option>'; });
-        h += '<td'+style+'><select class="cell-inner" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+opts+'</select>';
-        h += '<div class="resize-r" onmousedown="colResizeStart(event,\''+f+'\')"></div></td>';
-      } else if (TEXTAREA_FIELDS[f]) {
-        h += '<td'+(rh?' style="height:'+rh+'px"':'')+'><textarea class="cell-inner" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+(rh||40)+'px">'+esc(v)+'</textarea>';
-        h += '<div class="resize-r" onmousedown="colResizeStart(event,\''+f+'\')"></div></td>';
-      } else {
-        h += '<td'+style+'><input class="cell-inner" value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)">';
-        h += '<div class="resize-r" onmousedown="colResizeStart(event,\''+f+'\')"></div></td>';
+function render(){
+  var h='';
+  rows.forEach(function(r,i){
+    var cls=rowIE(r); if(selectedRows[r.id])cls+=' selected';
+    var rh=rowHeights[r.id]||defRowH;
+    var rhpx='height:'+rh+'px';
+    h+='<tr class="'+cls+'" id="r-'+r.id+'">';
+    // checkbox + row resize
+    h+='<td class="chk" style="'+rhpx+'"><input type="checkbox" onchange="sel('+r.id+',event)"'+(selectedRows[r.id]?' checked':'')+'>';
+    h+='<div class="resize-b" onmousedown="rowRS(event,'+r.id+')"></div></td>';
+    // num
+    h+='<td class="num" style="'+rhpx+'">'+(i+1)+'</td>';
+    // data cells
+    FIELDS.forEach(function(f){
+      var v=r[f]||'',cs=colSizes[f]?'width:'+colSizes[f]+'px;':'';
+      if(SEL[f]){
+        var o='<option value="">—</option>'; SEL[f].forEach(function(x){o+='<option value="'+x+'"'+(x===v?' selected':'')+'>'+x+'</option>';});
+        h+='<td class="data" style="'+rhpx+cs+'"><select class="cell-sel" onchange="upd('+r.id+',\''+f+'\',this.value);recolor('+r.id+')">'+o+'</select><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
+      }else if(TXT[f]){
+        h+='<td class="data" style="'+rhpx+cs+'"><textarea class="cell-txt" onchange="upd('+r.id+',\''+f+'\',this.value)" style="min-height:'+rh+'px">'+esc(v)+'</textarea><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
+      }else{
+        h+='<td class="data" style="'+rhpx+cs+'"><input class="cell-inp" value="'+esc(v)+'" onchange="upd('+r.id+',\''+f+'\',this.value)"><div class="resize-r" onmousedown="colRS(event,\''+f+'\')"></div></td>';
       }
     });
-    // Storyboard
-    h += '<td class="sb"><div class="sb-zone">';
-    var sbs = (r.storyboard||[]).filter(function(x){ return !!x; });
-    if (sbs.length===0) sbs=[''];
-    sbs.forEach(function(img, si) {
-      h += '<div class="sb-slot'+(img?' has-img':'')+'" id="sb-'+r.id+'-'+si+'"';
-      h += ' ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDrop(event,'+r.id+','+si+')">';
-      if (img) {
-        h += '<img src="'+img+'" onclick="viewImg(event,\''+img+'\')">';
-        h += '<button class="del" onclick="event.stopPropagation();delSB('+r.id+','+si+')">✕</button>';
-      } else {
-        h += '<span onclick="addSB('+r.id+','+si+')">+</span>';
-      }
-      h += '</div>';
+    // SB
+    var sbW=colSizes.sb?'width:'+colSizes.sb+'px;':'';
+    h+='<td class="sb-cell" style="'+rhpx+sbW+'"><div class="sb-zone">';
+    var sbs=(r.storyboard||[]).filter(function(x){return!!x;});
+    if(sbs.length===0)sbs=[''];
+    sbs.forEach(function(img,si){
+      h+='<div class="sb-slot'+(img?' has-img':'')+'" id="sb-'+r.id+'-'+si+'" ondragover="dOver(event)" ondragleave="this.classList.remove(\'drag-over\')" ondrop="dDrop(event,'+r.id+','+si+')">';
+      if(img){ h+='<img src="'+img+'" onclick="viewImg(event,\''+img+'\')"><button class="del" onclick="event.stopPropagation();delSB('+r.id+','+si+')">✕</button>'; }
+      else h+='<span onclick="addSB('+r.id+','+si+')">+</span>';
+      h+='</div>';
     });
-    h += '<div class="sb-slot sb-new" id="sb-'+r.id+'-new" ondragover="dOver(event)" ondragleave="event.currentTarget.classList.remove(\'drag-over\')" ondrop="dDropNew(event,'+r.id+')">';
-    h += '<span onclick="addSBNew('+r.id+')">+</span></div>';
-    h += '</div>';
-    h += '<div class="resize-r" onmousedown="colResizeStart(event,\'sb\')"></div></td>';
-    // Actions
-    h += '<td class="act"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
-    h += '</tr>';
+    h+='<div class="sb-slot sb-new" ondragover="dOver(event)" ondragleave="this.classList.remove(\'drag-over\')" ondrop="dDropNew(event,'+r.id+')"><span onclick="addSBNew('+r.id+')">+</span></div>';
+    h+='</div><div class="resize-r" onmousedown="colRS(event,\'sb\')"></div></td>';
+    // actions
+    h+='<td class="act" style="'+rhpx+'"><button onclick="dup('+i+')">⧉</button><button style="color:var(--accent)" onclick="del('+i+')">✕</button></td>';
+    h+='</tr>';
   });
-  document.getElementById('tBody').innerHTML = h;
-  document.getElementById('cnt').textContent = rows.length + ' сцен';
-
-  // Apply column widths
-  var ths = document.querySelectorAll('#theadRow th');
-  var colIdx = {
-    0:'chk',1:'num',2:'shotNo',3:'interior',4:'timeOfDay',5:'frame',6:'subject',
-    7:'angle',8:'lens',9:'equipment',10:'cameraMove',11:'action',12:'notes',
-    13:'opNotes',14:'text',15:'timing',16:'location',17:'sb',18:'act'
-  };
-  for (var ci in colIdx) {
-    var key = colIdx[ci];
-    var w = colSizes[key];
-    if (w && ths[ci]) { ths[ci].style.width = w+'px'; ths[ci].style.minWidth = w+'px'; }
-  }
+  document.getElementById('tBody').innerHTML=h;
+  document.getElementById('cnt').textContent=rows.length+' сцен';
+  // apply col widths to header
+  for(var ci in COL_IDX){ var w=colSizes[ci]; if(w){ var th=document.querySelectorAll('#theadRow th')[COL_IDX[ci]]; if(th){th.style.width=w+'px';th.style.minWidth=w+'px';} } }
   updateDelSel();
 }
 
-function recolor(id) {
-  var r = rows.find(function(x){ return x.id===id; });
-  if (!r) return;
-  var tr = document.getElementById('r-'+id);
-  if (tr) tr.className = rowIE(r) + (selectedRows[id]?' selected':'');
-}
+function recolor(id){ var r=rows.find(function(x){return x.id===id;}),tr=document.getElementById('r-'+id); if(r&&tr)tr.className=rowIE(r)+(selectedRows[id]?' selected':''); }
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// ===== RESIZE =====
+var rez=null,rezS=0,rezSz=0;
+function colRS(e,fk){ e.preventDefault(); e.stopPropagation(); rez={t:'col',k:fk}; rezS=e.clientX; var i=COL_IDX[fk],th=document.querySelectorAll('#theadRow th')[i]; rezSz=th?th.offsetWidth:(colSizes[fk]||80); document.addEventListener('mousemove',reMove); document.addEventListener('mouseup',reEnd); }
+function rowRS(e,rid){ e.preventDefault(); e.stopPropagation(); rez={t:'row',id:rid}; rezS=e.clientY; var tr=document.getElementById('r-'+rid); rezSz=tr?tr.offsetHeight:(rowHeights[rid]||defRowH); document.addEventListener('mousemove',reMove); document.addEventListener('mouseup',reEnd); }
+function reMove(e){
+  if(!rez)return;
+  if(rez.t==='col'){ var nw=Math.max(30,rezSz+e.clientX-rezS); colSizes[rez.k]=nw; var i=COL_IDX[rez.k],th=document.querySelectorAll('#theadRow th')[i]; if(th){th.style.width=nw+'px';th.style.minWidth=nw+'px';} document.querySelectorAll('#tBody td.data:nth-child('+(i+1)+'),#tBody td.sb-cell:nth-child('+(i+1)+')').forEach(function(x){x.style.width=nw+'px';}); }
+  else{ var nh=Math.max(24,rezSz+e.clientY-rezS); rowHeights[rez.id]=nh; var tr=document.getElementById('r-'+rez.id); if(tr){tr.style.height=nh+'px'; tr.querySelectorAll('td').forEach(function(x){x.style.height=nh+'px';}); tr.querySelectorAll('.cell-txt').forEach(function(x){x.style.minHeight=nh+'px';});} }
+}
+function reEnd(){ if(rez)saveProject(); rez=null; document.removeEventListener('mousemove',reMove); document.removeEventListener('mouseup',reEnd); }
 
-// ===== COLUMN / ROW RESIZE =====
-var resizing = null;
-var resizeStart = 0;
-var resizeStartSize = 0;
-
-function colResizeStart(e, fieldKey) {
-  e.preventDefault();
-  e.stopPropagation();
-  resizing = { type:'col', key:fieldKey };
-  resizeStart = e.clientX;
-  // Find current width
-  var ths = document.querySelectorAll('#theadRow th');
-  var colIdx = {chk:0,num:1,shotNo:2,interior:3,timeOfDay:4,frame:5,subject:6,angle:7,lens:8,equipment:9,cameraMove:10,action:11,notes:12,opNotes:13,text:14,timing:15,location:16,sb:17,act:18};
-  var idx = colIdx[fieldKey];
-  if (idx!==undefined && ths[idx]) {
-    resizeStartSize = ths[idx].offsetWidth;
-  } else {
-    resizeStartSize = colSizes[fieldKey] || 80;
-  }
-  document.addEventListener('mousemove', onResizeMove);
-  document.addEventListener('mouseup', onResizeEnd);
-}
-
-function rowResizeStart(e, rowId) {
-  e.preventDefault();
-  e.stopPropagation();
-  resizing = { type:'row', id:rowId };
-  resizeStart = e.clientY;
-  var tr = document.getElementById('r-'+rowId);
-  resizeStartSize = tr ? tr.offsetHeight : (rowHeights[rowId] || 60);
-  document.addEventListener('mousemove', onResizeMove);
-  document.addEventListener('mouseup', onResizeEnd);
-}
-
-function onResizeMove(e) {
-  if (!resizing) return;
-  if (resizing.type === 'col') {
-    var delta = e.clientX - resizeStart;
-    var newW = Math.max(30, resizeStartSize + delta);
-    colSizes[resizing.key] = newW;
-    var ths = document.querySelectorAll('#theadRow th');
-    var colIdx = {chk:0,num:1,shotNo:2,interior:3,timeOfDay:4,frame:5,subject:6,angle:7,lens:8,equipment:9,cameraMove:10,action:11,notes:12,opNotes:13,text:14,timing:15,location:16,sb:17,act:18};
-    var idx = colIdx[resizing.key];
-    if (idx!==undefined && ths[idx]) { ths[idx].style.width = newW+'px'; ths[idx].style.minWidth = newW+'px'; }
-    // Also set on all td in this column position
-    var tds = document.querySelectorAll('#tBody tr');
-    tds.forEach(function(tr) {
-      var td = tr.children[idx];
-      if (td) td.style.width = newW+'px';
-    });
-  } else {
-    var delta = e.clientY - resizeStart;
-    var newH = Math.max(30, resizeStartSize + delta);
-    rowHeights[resizing.id] = newH;
-    var tr = document.getElementById('r-'+resizing.id);
-    if (tr) {
-      tr.style.height = newH+'px';
-      var tds = tr.querySelectorAll('td');
-      tds.forEach(function(td) { td.style.height = newH+'px'; });
-      var ta = tr.querySelectorAll('textarea.cell-inner');
-      ta.forEach(function(t) { t.style.minHeight = newH+'px'; });
-    }
-  }
-}
-
-function onResizeEnd() {
-  if (resizing) saveProject();
-  resizing = null;
-  document.removeEventListener('mousemove', onResizeMove);
-  document.removeEventListener('mouseup', onResizeEnd);
-}
-
-// ===== ROW ACTIONS =====
-function addRow() {
-  var r = { id: nextId++, storyboard: [] };
-  FIELDS.forEach(function(f){ r[f] = ''; });
-  rows.push(r);
-  render();
-  var el = document.getElementById('r-'+r.id);
-  if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
-  saveProject();
-}
-function addRows(n) { for (var i=0;i<n;i++) addRow(); }
-function upd(id, key, val) {
-  var r = rows.find(function(x){ return x.id===id; });
-  if (r) { r[key] = val; saveProject(); }
-}
-function del(i) {
-  if (!confirm('Удалить строку #'+(i+1)+'?')) return;
-  delete selectedRows[rows[i].id];
-  delete rowHeights[rows[i].id];
-  rows.splice(i,1);
-  render();
-  saveProject();
-}
-function dup(i) {
-  var r = JSON.parse(JSON.stringify(rows[i]));
-  r.id = nextId++;
-  rows.splice(i+1,0,r);
-  render();
-  saveProject();
-}
+// ===== ROWS =====
+function addRow(){ var r={id:nextId++,storyboard:[]}; FIELDS.forEach(function(f){r[f]='';}); rows.push(r); render(); var el=document.getElementById('r-'+r.id); if(el)el.scrollIntoView({behavior:'smooth',block:'center'}); saveProject(); }
+function addRows(n){for(var i=0;i<n;i++)addRow();}
+function upd(id,k,v){var r=rows.find(function(x){return x.id===id;});if(r){r[k]=v;saveProject();}}
+function del(i){if(!confirm('Удалить строку #'+(i+1)+'?'))return; delete selectedRows[rows[i].id]; delete rowHeights[rows[i].id]; rows.splice(i,1);render();saveProject();}
+function dup(i){var r=JSON.parse(JSON.stringify(rows[i]));r.id=nextId++;rows.splice(i+1,0,r);render();saveProject();}
 
 // ===== MULTI-SELECT =====
-function toggleRow(id, e) {
-  if (e.target.checked) selectedRows[id] = true;
-  else delete selectedRows[id];
-  render();
-}
-function delSelected() {
-  var ids = Object.keys(selectedRows);
-  if (ids.length===0) return;
-  if (!confirm('Удалить '+ids.length+' строк?')) return;
-  rows = rows.filter(function(r){ return !selectedRows[r.id]; });
-  selectedRows = {};
-  render();
-  saveProject();
-}
-function updateDelSel() {
-  var btn = document.getElementById('delSel');
-  var n = Object.keys(selectedRows).length;
-  btn.style.display = n>0 ? '' : 'none';
-  btn.textContent = '✕ '+n;
-}
+function sel(id,e){if(e.target.checked)selectedRows[id]=true;else delete selectedRows[id];render();}
+function delSelected(){var ids=Object.keys(selectedRows);if(!ids.length)return;if(!confirm('Удалить '+ids.length+' строк?'))return;rows=rows.filter(function(r){return!selectedRows[r.id];});selectedRows={};render();saveProject();}
+function updateDelSel(){var b=document.getElementById('delSel'),n=Object.keys(selectedRows).length;b.style.display=n>0?'':'none';b.textContent='✕ '+n;}
 
-// ===== STORYBOARD =====
-function addSB(id, si) { pickImg(function(u){ saveSB(id, si, u); }); }
-function addSBNew(id) { pickImg(function(u){ addSBSlot(id, u); }); }
-function pickImg(cb) {
-  var inp = document.createElement('input');
-  inp.type = 'file'; inp.accept = 'image/*';
-  inp.onchange = function() { var f = inp.files[0]; if (f) processImg(f, cb); };
-  inp.click();
-}
-function processImg(file, cb) {
-  if (file.size > 800000) {
-    var r = new FileReader();
-    r.onload = function(e) {
-      var img = new Image();
-      img.onload = function() {
-        var w=img.width,h=img.height,ratio=Math.min(800/w,800/h);
-        w=Math.round(w*ratio);h=Math.round(h*ratio);
-        var c=document.createElement('canvas');c.width=w;c.height=h;
-        c.getContext('2d').drawImage(img,0,0,w,h);
-        cb(c.toDataURL('image/jpeg',0.7));
-      };
-      img.src=e.target.result;
-    };
-    r.readAsDataURL(file);
-  } else {
-    var fr = new FileReader();
-    fr.onload = function(e){ cb(e.target.result); };
-    fr.readAsDataURL(file);
-  }
-}
-function saveSB(id, si, url) {
-  var r = rows.find(function(x){ return x.id===id; });
-  if (!r) return;
-  if (!r.storyboard) r.storyboard = [];
-  r.storyboard = r.storyboard.filter(function(x){ return !!x; });
-  if (si >= r.storyboard.length) r.storyboard.push(url);
-  else r.storyboard[si] = url;
-  render();
-  saveProject();
-}
-function addSBSlot(id, url) {
-  var r = rows.find(function(x){ return x.id===id; });
-  if (!r) return;
-  if (!r.storyboard) r.storyboard = [];
-  r.storyboard = r.storyboard.filter(function(x){ return !!x; });
-  r.storyboard.push(url);
-  render();
-  saveProject();
-}
-function delSB(id, si) {
-  var r = rows.find(function(x){ return x.id===id; });
-  if (!r || !r.storyboard) return;
-  r.storyboard = r.storyboard.filter(function(x){ return !!x; });
-  r.storyboard.splice(si,1);
-  render();
-  saveProject();
-}
-function viewImg(e, url) {
-  e.stopPropagation();
-  var m = document.createElement('div');
-  m.className = 'modal';
-  m.innerHTML = '<img src="'+url+'">';
-  m.onclick = function(){ m.remove(); };
-  document.body.appendChild(m);
-}
-function dOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-function dDrop(e, id, si) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  var f = e.dataTransfer.files[0];
-  if (!f || !f.type.startsWith('image/')) return;
-  processImg(f, function(u){ saveSB(id, si, u); });
-}
-function dDropNew(e, id) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  var f = e.dataTransfer.files[0];
-  if (!f || !f.type.startsWith('image/')) return;
-  processImg(f, function(u){ addSBSlot(id, u); });
-}
+// ===== SB =====
+function addSB(id,si){pickImg(function(u){saveSB(id,si,u);});}
+function addSBNew(id){pickImg(function(u){addSBSlot(id,u);});}
+function pickImg(cb){var i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=function(){var f=i.files[0];if(f)procImg(f,cb);};i.click();}
+function procImg(f,cb){if(f.size>800000){var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var w=img.width,h=img.height,ra=Math.min(800/w,800/h);w=Math.round(w*ra);h=Math.round(h*ra);var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.7));};img.src=e.target.result;};r.readAsDataURL(f);}else{var fr=new FileReader();fr.onload=function(e){cb(e.target.result);};fr.readAsDataURL(f);}}
+function saveSB(id,si,u){var r=rows.find(function(x){return x.id===id;});if(!r)return;if(!r.storyboard)r.storyboard=[];r.storyboard=r.storyboard.filter(function(x){return!!x;});if(si>=r.storyboard.length)r.storyboard.push(u);else r.storyboard[si]=u;render();saveProject();}
+function addSBSlot(id,u){var r=rows.find(function(x){return x.id===id;});if(!r)return;if(!r.storyboard)r.storyboard=[];r.storyboard=r.storyboard.filter(function(x){return!!x;});r.storyboard.push(u);render();saveProject();}
+function delSB(id,si){var r=rows.find(function(x){return x.id===id;});if(!r||!r.storyboard)return;r.storyboard=r.storyboard.filter(function(x){return!!x;});r.storyboard.splice(si,1);render();saveProject();}
+function viewImg(e,u){e.stopPropagation();var m=document.createElement('div');m.className='modal';m.innerHTML='<img src="'+u+'">';m.onclick=function(){m.remove();};document.body.appendChild(m);}
+function dOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
+function dDrop(e,id,si){e.preventDefault();e.currentTarget.classList.remove('drag-over');var f=e.dataTransfer.files[0];if(!f||!f.type.startsWith('image/'))return;procImg(f,function(u){saveSB(id,si,u);});}
+function dDropNew(e,id){e.preventDefault();e.currentTarget.classList.remove('drag-over');var f=e.dataTransfer.files[0];if(!f||!f.type.startsWith('image/'))return;procImg(f,function(u){addSBSlot(id,u);});}
 
 // ===== IMPORT/EXPORT =====
-function exportCSV() {
-  var hdr = ['SHOT','Инт/Нат','Время суток','Размер кадра','Субъект','Угол','Линза','Оборудование','Движение камеры','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
-  var map = ['shotNo','interior','timeOfDay','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
-  var lines = [hdr.join(',')];
-  rows.forEach(function(r) {
-    lines.push(map.map(function(f){ return '"'+(r[f]||'').replace(/"/g,'""')+'"'; }).join(','));
-  });
-  dl('\uFEFF'+lines.join('\n'), currentProj+'.csv', 'text/csv');
+function exportCSV(){
+  var hdr=['SHOT','Инт/Нат','Время суток','Кадр','Субъект','Угол','Линза','Оборудование','Камера','Действие','Заметки','Заметки ОПЕР','Текст','Тайминг','Локация'];
+  var map=['shotNo','interior','timeOfDay','frame','subject','angle','lens','equipment','cameraMove','action','notes','opNotes','text','timing','location'];
+  var lines=[hdr.join(',')];
+  rows.forEach(function(r){ lines.push(map.map(function(f){return'"'+(r[f]||'').replace(/"/g,'""')+'"';}).join(',')); });
+  dl('\uFEFF'+lines.join('\n'),currentProj+'.csv','text/csv');
 }
-function exportJSON() {
-  dl(JSON.stringify({project:currentProj,meta:meta,rows:rows,colSizes:colSizes,rowHeights:rowHeights},null,2), currentProj+'.json', 'application/json');
+function exportJSON(){ dl(JSON.stringify({project:currentProj,meta:meta,rows:rows,colSizes:colSizes,rowHeights:rowHeights},null,2),currentProj+'.json','application/json'); }
+function dl(c,n,t){var b=new Blob([c],{type:t}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
+
+function loadFile(inp){
+  var f=inp.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(e){
+    if(f.name.endsWith('.json')){
+      var d=JSON.parse(e.target.result);
+      if(d.project&&d.project!==currentProj){if(confirm('Импортировать как проект "'+d.project+'"?')){projects[d.project]={rows:d.rows||[],nextId:Math.max.apply(null,(d.rows||[]).map(function(x){return x.id}).concat([0]))+1,meta:d.meta||{},colSizes:d.colSizes||{},rowHeights:d.rowHeights||{}};currentProj=d.project;localStorage.setItem('ds_cur',d.project);loadProject();selectedRows={};render();updateProjectSelector();saveAll();return;}}
+      meta=d.meta||{};document.getElementById('crDir').value=meta.director||'';document.getElementById('crOp').value=meta.operator||'';document.getElementById('crProd').value=meta.producer||'';
+      rows=d.rows||[];colSizes=d.colSizes||{};rowHeights=d.rowHeights||{};nextId=Math.max.apply(null,rows.map(function(x){return x.id}).concat([0]))+1;
+      selectedRows={};render();saveProject();
+    }else{importCSV(e.target.result);}
+  };r.readAsText(f);inp.value='';
 }
-function dl(content, name, type) {
-  var b = new Blob([content], {type:type});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(b); a.download = name; a.click();
-}
-function loadFile(inp) {
-  var f = inp.files[0]; if (!f) return;
-  var r = new FileReader();
-  r.onload = function(e) {
-    if (f.name.endsWith('.json')) {
-      var d = JSON.parse(e.target.result);
-      if (d.project && d.project!==currentProj) {
-        if (confirm('Импортировать как проект "'+d.project+'"?')) {
-          projects[d.project] = { rows:d.rows||[], nextId:Math.max.apply(null,(d.rows||[]).map(function(x){return x.id}).concat([0]))+1, meta:d.meta||{}, colSizes:d.colSizes||{}, rowHeights:d.rowHeights||{} };
-          currentProj = d.project;
-          localStorage.setItem('dir_script_current', d.project);
-          loadProject();
-          selectedRows = {};
-          render();
-          updateProjectSelector();
-          saveAll();
-          return;
-        }
-      }
-      meta = d.meta || {};
-      document.getElementById('crDir').value = meta.director||'';
-      document.getElementById('crOp').value = meta.operator||'';
-      document.getElementById('crProd').value = meta.producer||'';
-      rows = d.rows||[];
-      colSizes = d.colSizes||{};
-      rowHeights = d.rowHeights||{};
-      nextId = Math.max.apply(null,rows.map(function(x){return x.id}).concat([0]))+1;
-      selectedRows = {};
-      render();
-      saveProject();
-    } else { importCSV(e.target.result); }
-  };
-  r.readAsText(f);
-  inp.value = '';
-}
-function importCSV(content) {
-  var lines = content.split('\n');
-  if (lines.length<2) return;
-  var map = {'SHOT':'shotNo','SHOT #':'shotNo','Инт/Нат':'interior','I/E D/N':'interior','Время суток':'timeOfDay','Время':'timeOfDay',
-    'Размер кадра':'frame','Кадр':'frame','Субъект':'subject','Угол':'angle','Линза':'lens','Оборудование':'equipment','Оборуд.':'equipment',
-    'Движение камеры':'cameraMove','Камера':'cameraMove','Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
+
+function importCSV(content){
+  var lines=content.split('\n');if(lines.length<2)return;
+  // Maps CSV headers to our field keys
+  var map={'SHOT':'shotNo','SHOT #':'shotNo',
+    'Инт/Нат':'interior','I/E D/N':'interior',
+    'Время суток':'timeOfDay','Время':'timeOfDay',
+    'Размер кадра':'frame','Кадр':'frame','Субъект':'subject','Угол':'angle','Линза':'lens',
+    'Оборудование':'equipment','Оборуд.':'equipment',
+    'Движение камеры':'cameraMove','Камера':'cameraMove',
+    'Действие':'action','Заметки':'notes','Заметки ОПЕР':'opNotes','Текст':'text',
     'Тайминг':'timing','тайминг трека':'timing','Локация':'location','локация':'location'};
-  var hdr = lines[0].split(',').map(function(x){ return x.replace(/"/g,'').trim(); });
-  var imported = [];
-  for (var i=1;i<lines.length;i++) {
-    var cols = parseCSV(lines[i]);
-    if (cols.length===0||(cols.length===1&&!cols[0])) continue;
-    var r = { id: nextId++, storyboard: [] };
-    FIELDS.forEach(function(f){ r[f] = ''; });
-    for (var j=0;j<Math.min(cols.length,hdr.length);j++) {
-      var key = map[hdr[j]];
-      if (key) {
-        // Handle old ieDn format: split into interior + timeOfDay
-        if (key==='interior' && cols[j] && cols[j].includes(' ')) {
-          var parts = cols[j].split(' ');
-          r.interior = parts[0];
-          if (parts.length>=2) r.timeOfDay = parts.slice(1).join(' ');
-        } else {
-          r[key] = cols[j];
-        }
+  var hdr=lines[0].split(',').map(function(x){return x.replace(/"/g,'').trim();});
+  var imported=[];
+  for(var i=1;i<lines.length;i++){
+    var cols=parseCSV(lines[i]);
+    if(cols.length===0||(cols.length===1&&!cols[0]))continue;
+    var r={id:nextId++,storyboard:[]};FIELDS.forEach(function(f){r[f]='';});
+    for(var j=0;j<Math.min(cols.length,hdr.length);j++){
+      var k=map[hdr[j]];
+      if(k){
+        // Split old combined I/E D/N into interior + timeOfDay
+        if(k==='interior'&&cols[j]&&cols[j].includes(' ')){
+          var parts=cols[j].split(' ');r.interior=parts[0];if(parts.length>=2)r.timeOfDay=parts.slice(1).join(' ');
+        }else{r[k]=cols[j]||'';}
       }
     }
     imported.push(r);
   }
-  if (imported.length>0) {
-    if (rows.length>0 && confirm('Добавить к существующим?')) rows=rows.concat(imported);
-    else rows=imported;
-    selectedRows = {};
-    render();
-    saveProject();
+  if(imported.length>0){
+    if(rows.length>0&&confirm(imported.length+' сцен импортировано. Добавить к существующим (ОК) или заменить (Отмена)?')){
+      rows=rows.concat(imported);
+    }else{rows=imported;}
+    selectedRows={};render();saveProject();
   }
 }
-function parseCSV(line) {
-  var res=[],cur='',q=false;
-  for (var i=0;i<line.length;i++) {
-    var ch=line[i];
-    if (q){ if(ch==='"'){ if(line[i+1]==='"'){ cur+='"';i++; } else q=false; } else cur+=ch; }
-    else { if(ch==='"') q=true; else if(ch===','){ res.push(cur.trim());cur=''; } else cur+=ch; }
-  }
-  res.push(cur.trim()); return res;
-}
+function parseCSV(line){var res=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(q){if(ch==='"'){if(line[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=ch;}else{if(ch==='"')q=true;else if(ch===','){res.push(cur.trim());cur='';}else cur+=ch;}}res.push(cur.trim());return res;}
 
 // ===== INIT =====
-loadAll();
-loadProject();
-render();
-updateProjectSelector();
+loadAll();loadProject();render();updateProjectSelector();
 </script>
 </body>
 </html>
